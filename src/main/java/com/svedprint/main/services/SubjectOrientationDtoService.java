@@ -30,7 +30,7 @@ public class SubjectOrientationDtoService {
     private SubjectOrientationMapper subjectOrientationMapper;
 
 
-    public SubjectOrientationDto update(SubjectOrientationDto subjectOrientationDto, boolean update) {
+    public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, boolean update) {
         if (subjectOrientationDto == null) {
             return null;
         }
@@ -40,10 +40,8 @@ public class SubjectOrientationDtoService {
         String yearId = ofNullable(subjectOrientationDto.getYear()).map(YearDto::getId).orElse(ofNullable(subjectOrientation.getYear()).map(Year::getId).orElse(null));
         if (yearId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED);
-        } else if (!yearId.equals(subjectOrientation.getYear().getId())) { // TODO: This should most probably be broken, not sure tho, should check it
-            subjectOrientation.setYear(yearRepository.getOne(yearId));
         } else {
-            subjectOrientation.setYear(null);
+            subjectOrientation.setYear(yearRepository.getOne(yearId));
         }
 
         if (subjectOrientation.getId() == null) {

@@ -29,7 +29,7 @@ public class YearDtoService {
     @Autowired
     private SchoolRepository schoolRepository;
 
-    public YearDto update(YearDto yearDto, boolean update) {
+    public YearDto save(YearDto yearDto, boolean update) {
         if (yearDto == null) {
             return null;
         }
@@ -52,7 +52,7 @@ public class YearDtoService {
 
         if (schoolId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED);
-        } else if (!schoolId.equals(year.getSchool().getId())) {
+        } else {
             year.setSchool(schoolRepository.getOne(schoolId));
             yearDto.setSchool(null);
         }

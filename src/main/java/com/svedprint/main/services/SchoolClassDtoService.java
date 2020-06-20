@@ -2,8 +2,6 @@ package com.svedprint.main.services;
 
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.TeacherDto;
-import com.svedprint.main.exceptions.SvedPrintException;
-import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.SchoolClassMapper;
 import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.repositories.SchoolClassRepository;
@@ -41,7 +39,7 @@ public class SchoolClassDtoService {
         return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
     }
 
-    public SchoolClassDto update(SchoolClassDto schoolClassDto, boolean update) {
+    public SchoolClassDto save(SchoolClassDto schoolClassDto, boolean update) {
 
         // TODO: Differentiate the operations between Admin and Teacher
 
@@ -55,9 +53,7 @@ public class SchoolClassDtoService {
                 .orElse(ofNullable(schoolClassDto.getTeacher()).map(TeacherDto::getToken)
                         .orElse(null));
 
-        if (teacherId == null) {
-            throw new SvedPrintException(SvedPrintExceptionType.NO_USER_PROVIDED);
-        } else {
+        if (teacherId != null) {
             schoolClassDto.setTeacher(teacherDtoService.findOne(teacherId, teacherId));
         }
 

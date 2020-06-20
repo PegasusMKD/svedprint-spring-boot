@@ -59,7 +59,7 @@ public class TeacherDtoService {
         return null;
     }
 
-    public TeacherDto update(TeacherDto teacherDto, boolean update) {
+    public TeacherDto save(TeacherDto teacherDto, boolean update) {
         if (teacherDto == null) {
             return null;
         }

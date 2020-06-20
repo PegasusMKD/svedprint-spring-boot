@@ -40,7 +40,7 @@ public class StudentDtoService {
     @Autowired
     private TeacherDtoService teacherDtoService;
 
-    public StudentDto update(StudentDto dto, boolean update) {
+    public StudentDto save(StudentDto dto, boolean update) {
         if (dto == null) {
             return null;
         }

@@ -23,7 +23,7 @@ public class SchoolDtoService {
         return schoolMapper.toDto(schoolRepository.getOne(id));
     }
 
-    public SchoolDto update(SchoolDto schoolDto, boolean update) {
+    public SchoolDto save(SchoolDto schoolDto, boolean update) {
         if (schoolDto == null) {
             return null;
         }
