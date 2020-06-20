@@ -19,4 +19,11 @@ public class SchoolClassService {
         return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
     }
 
+    public SchoolClassDto update(SchoolClassDto schoolClassDto, boolean update) {
+        if (schoolClassDto == null) {
+            return null;
+        }
+
+    }
+
 }

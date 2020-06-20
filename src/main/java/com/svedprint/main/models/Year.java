@@ -1,10 +1,7 @@
 package com.svedprint.main.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,10 +9,14 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Year {
 
     @JsonIgnore

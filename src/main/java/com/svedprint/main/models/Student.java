@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -151,7 +153,9 @@ public class Student {
     @ElementCollection
     private List<Integer> droppedGrades;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     private SchoolClass schoolClass;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SubjectOrientation subjectOrientation;
 }

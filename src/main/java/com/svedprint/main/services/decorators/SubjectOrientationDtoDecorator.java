@@ -1,6 +1,6 @@
 package com.svedprint.main.services.decorators;
 
-import com.svedprint.main.models.SubjectOrientation;
+import com.svedprint.main.dtos.SubjectOrientationDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -10,9 +10,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class SubjectOrientationDtoDecorator extends SubjectOrientation {
+public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
 
-    public SubjectOrientation init() {
+    public SubjectOrientationDto init() {
         return this;
     }
 

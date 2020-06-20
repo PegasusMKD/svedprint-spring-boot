@@ -1,10 +1,7 @@
 package com.svedprint.main.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,10 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class SubjectOrientation {
 
     // TODO: Rework code so that it makes a copy of an existing SubjectOrientation, instead of just setting a relationship to the existing one
@@ -43,5 +44,8 @@ public class SubjectOrientation {
     private Year year;
 
     @ManyToMany
-    private Set<SchoolClass>classes;
+    private Set<SchoolClass> classes;
+
+    @OneToMany(mappedBy = "subjectOrientation", cascade = CascadeType.ALL)
+    private Set<Student> students;
 }
