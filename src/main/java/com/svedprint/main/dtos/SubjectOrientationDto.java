@@ -23,6 +23,7 @@ public class SubjectOrientationDto {
     public List<String> shortNames;
     public YearDto year;
     public Set<SchoolClassDto> classes;
+    public Set<StudentDto> students;
 
     @JsonIgnore
     public boolean isIdSet() {

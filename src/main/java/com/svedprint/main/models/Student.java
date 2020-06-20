@@ -35,20 +35,20 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name="cpy_counter")
-    private int cpyCounter;
+    @Column(name = "cpy_counter")
+    private Integer cpyCounter;
 
-    @Column(name="first_name", length = 50)
-    private String first_name;
+    @Column(name = "first_name", length = 50)
+    private String firstName;
 
-    @Column(name="middle_name", length = 50)
-    private String middle_name;
+    @Column(name = "middle_name", length = 50)
+    private String middleName;
 
-    @Column(name="last_name", length = 50)
-    private String last_name;
+    @Column(name = "last_name", length = 50)
+    private String lastName;
 
-    @Column(name="number")
-    private int number;
+    @Column(name = "number")
+    private Integer number;
 
     @Column(name="fathers_name", length = 100)
     private String fathersName;
@@ -82,11 +82,11 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private PassedYear passedYear;
 
-    @Column(name="justified_absences")
-    private int justifiedAbsences;
+    @Column(name = "justified_absences")
+    private Integer justifiedAbsences;
 
-    @Column(name="unjustified_absences")
-    private int unjustifiedAbsences;
+    @Column(name = "unjustified_absences")
+    private Integer unjustifiedAbsences;
 
     @Column(name="exam_types", length = 20)
     @Enumerated(EnumType.STRING)
@@ -114,8 +114,8 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private SuccessType lastSchoolYearSuccessType;
 
-    @Column(name="last_school_year")
-    private Date lastSchoolYear;
+    @Column(name = "last_school_year")
+    private Integer lastSchoolYear;
 
     @Column(name="last_school_name", length = 200)
     private String lastSchoolName;
@@ -139,7 +139,7 @@ public class Student {
     private String optionalSubjects; // TODO: Maybe this should be reworked, not sure what the field is currently used for, maybe it could be a list of integers
 
     @Column(name = "diploma_business_number")
-    private int diplomaBusinessNumber;
+    private Integer diplomaBusinessNumber;
 
     @ElementCollection
     private List<String> languages; // TODO: Maybe this should be reworked so that it doesn't send languages as 0:1
