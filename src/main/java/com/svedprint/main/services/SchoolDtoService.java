@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class SchoolService {
+public class SchoolDtoService {
 
     @Autowired
     private SchoolRepository schoolRepository;
@@ -28,10 +28,12 @@ public class SchoolService {
             return null;
         }
         final School school = schoolDto.isIdSet() ? schoolRepository.getOne(schoolDto.getId()) : new School();
+
         if (school.getId() == null && !update) {
             school.setYears(new ArrayList<>());
             school.setTeachers(new ArrayList<>());
         }
+
         SchoolDtoDecorator decorator = SchoolDtoDecorator.builder().build();
         schoolMapper.decorate(schoolDto, decorator);
         schoolMapper.updateEntity(decorator.init(school, update), school);

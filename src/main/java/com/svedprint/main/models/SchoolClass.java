@@ -35,7 +35,7 @@ public class SchoolClass {
     // TODO: Check if "otpishani", "otstraneti", "napushtile", "zapishale" is needed
 
     //TODO: Add Relation to SubjectOrientation
-    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Student> students;
 
     @ManyToMany

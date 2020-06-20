@@ -31,11 +31,15 @@ public class TeacherDtoService {
     private TeacherMapper teacherMapper;
 
     @Autowired
-    private SchoolService schoolService;
+    private SchoolDtoService schoolDtoService;
 
     @Autowired
-    private SchoolClassService schoolClassService;
+    private SchoolClassDtoService schoolClassDtoService;
 
+
+    public TeacherDto findOne(String id, String token) {
+        return teacherMapper.toDto(teacherRepository.findByIdOrToken(id, token));
+    }
 
     public TeacherDto login(TeacherDto teacherDto, String password) {
         Teacher teacher = teacherRepository.findByUsername(teacherDto.getUsername());
@@ -61,12 +65,12 @@ public class TeacherDtoService {
 
         String school = ofNullable(teacherDto.getSchool()).map(SchoolDto::getId).orElse(ofNullable(teacher.getSchool()).map(School::getId).orElse(null));
         if (school != null && !school.equals(teacher.getSchool().getId())) {
-            teacherDto.setSchool(schoolService.findOne(school));
+            teacherDto.setSchool(schoolDtoService.findOne(school));
         }
 
         String schoolClass = ofNullable(teacherDto.getSchoolClass()).map(SchoolClassDto::getId).orElse(ofNullable(teacher.getSchoolClass()).map(SchoolClass::getId).orElse(null));
         if (schoolClass != null && !schoolClass.equals(teacher.getSchoolClass().getId())) {
-            teacherDto.setSchoolClass(schoolClassService.findOne(schoolClass));
+            teacherDto.setSchoolClass(schoolClassDtoService.findOne(schoolClass));
         }
 
         TeacherDtoDecorator decorator = TeacherDtoDecorator.builder().build();
