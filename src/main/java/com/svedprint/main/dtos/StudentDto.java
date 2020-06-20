@@ -1,5 +1,6 @@
 package com.svedprint.main.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.svedprint.main.dtos.helperDtos.PromDataDto;
 import com.svedprint.main.models.enums.*;
 import lombok.*;
@@ -57,4 +58,9 @@ public class StudentDto {
     public List<Integer> grades;
     public List<Integer> droppedGrades;
     public SchoolClassDto schoolClass;
+
+    @JsonIgnore
+    public boolean isIdSet() {
+        return id != null;
+    }
 }

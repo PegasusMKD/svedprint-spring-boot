@@ -1,5 +1,6 @@
 package com.svedprint.main.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,4 +23,10 @@ public class TeacherDto {
     public boolean printAllowed;
     public SchoolDto school;
     public SchoolClassDto schoolClass;
+
+    @JsonIgnore
+    public boolean isIdSet() {
+        return id != null;
+    }
+
 }

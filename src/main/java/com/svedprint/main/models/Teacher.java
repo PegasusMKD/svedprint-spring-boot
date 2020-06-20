@@ -34,13 +34,13 @@ public class Teacher {
     @Column(name = "last_name", length = 45)
     private String lastName;
 
-    @Column(name = "username", length = 60)
+    @Column(name = "username", length = 60, nullable = false, unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "token")
+    @Column(name = "token", length = 20)
     private String token;
 
     @Column(name = "print_allowed")

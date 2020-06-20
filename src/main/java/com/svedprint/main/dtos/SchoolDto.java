@@ -1,5 +1,6 @@
 package com.svedprint.main.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -30,4 +31,9 @@ public class SchoolDto {
     public List<Date> printDatesForTestimony;
     public List<YearDto> years;
     public List<TeacherDto> teachers;
+
+    @JsonIgnore
+    public boolean isIdSet() {
+        return id != null;
+    }
 }

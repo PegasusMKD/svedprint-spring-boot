@@ -1,5 +1,6 @@
 package com.svedprint.main.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,4 +23,9 @@ public class SubjectOrientationDto {
     public List<String> shortNames;
     public YearDto year;
     public Set<SchoolClassDto> classes;
+
+    @JsonIgnore
+    public boolean isIdSet() {
+        return id != null;
+    }
 }
