@@ -41,6 +41,10 @@ public class TeacherDtoService {
         return teacherMapper.toDto(teacherRepository.findByIdOrToken(id, token));
     }
 
+    public Teacher findEntityByToken(String token) {
+        return teacherRepository.findByToken(token);
+    }
+
     public TeacherDto login(TeacherDto teacherDto, String password) {
         Teacher teacher = teacherRepository.findByUsername(teacherDto.getUsername());
         if (argon2.verify(teacher.getPassword(), password)) {
@@ -64,24 +68,22 @@ public class TeacherDtoService {
         // TODO: Add admin check for whether update is coming from same school, or different one with checking whether the admin has a school, and if he does, whether it's the same as the teacher
 
         String school = ofNullable(teacherDto.getSchool()).map(SchoolDto::getId).orElse(ofNullable(teacher.getSchool()).map(School::getId).orElse(null));
-        if (school != null && !school.equals(teacher.getSchool().getId())) {
+        if (school == null) {
+            throw new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED);
+        } else {
             teacherDto.setSchool(schoolDtoService.findOne(school));
         }
 
         String schoolClass = ofNullable(teacherDto.getSchoolClass()).map(SchoolClassDto::getId).orElse(ofNullable(teacher.getSchoolClass()).map(SchoolClass::getId).orElse(null));
-        if (schoolClass != null && !schoolClass.equals(teacher.getSchoolClass().getId())) {
+        if (schoolClass == null) {
+            throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
+        } else {
             teacherDto.setSchoolClass(schoolClassDtoService.findOne(schoolClass));
         }
 
         TeacherDtoDecorator decorator = TeacherDtoDecorator.builder().build();
         teacherMapper.decorate(teacherDto, decorator);
         teacherMapper.updateEntity(decorator.init(teacher, update, argon2), teacher);
-
-        if (teacher.getSchoolClass() == null) {
-            throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
-        } else if (teacher.getSchool() == null) {
-            throw new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED);
-        }
 
         return teacherMapper.toDto(teacherRepository.save(teacher));
     }

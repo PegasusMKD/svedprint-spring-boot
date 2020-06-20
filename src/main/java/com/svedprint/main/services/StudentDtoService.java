@@ -3,6 +3,7 @@ package com.svedprint.main.services;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.StudentDto;
 import com.svedprint.main.dtos.SubjectOrientationDto;
+import com.svedprint.main.dtos.TeacherDto;
 import com.svedprint.main.exceptions.SvedPrintException;
 import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.StudentMapper;
@@ -15,6 +16,9 @@ import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.services.decorators.StudentDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
@@ -32,6 +36,9 @@ public class StudentDtoService {
 
     @Autowired
     private SubjectOrientationRepository subjectOrientationRepository;
+
+    @Autowired
+    private TeacherDtoService teacherDtoService;
 
     public StudentDto update(StudentDto dto, boolean update) {
         if (dto == null) {
@@ -59,5 +66,10 @@ public class StudentDtoService {
         studentMapper.decorate(dto, decorator);
         studentMapper.updateEntity(decorator.init(student, update), student);
         return studentMapper.toDto(studentRepository.save(student));
+    }
+
+    public Set<StudentDto> getAllStudents(TeacherDto teacherDto) {
+        return teacherDtoService.findEntityByToken(teacherDto.getToken()).getSchoolClass().getStudents()
+                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toSet());
     }
 }

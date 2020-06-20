@@ -21,6 +21,7 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class StudentDtoDecorator extends StudentDto {
 
+    // TODO: Add needed repository and mappers to be able to write the other 2 functions below
     public StudentDto init(Student entity, boolean update) {
 
         gender = ofNullable(gender).orElse(ofNullable(entity.getGender()).orElse(Gender.MALE));
@@ -56,10 +57,22 @@ public class StudentDtoDecorator extends StudentDto {
         optionalSubjects = ofNullable(optionalSubjects).orElse(ofNullable(entity.getOptionalSubjects()).orElse(""));
         diplomaBusinessNumber = ofNullable(diplomaBusinessNumber).orElse(ofNullable(entity.getDiplomaBusinessNumber()).orElse(0));
         languages = ofNullable(languages).orElse(ofNullable(entity.getLanguages()).orElse(new ArrayList<>()));
+
         // Should add mapper for the maturska
 //        maturska = ofNullable(maturska).orElse(ofNullable(entity.getMaturska()).orElse(null));
-        grades = ofNullable(grades).orElse(ofNullable(entity.getGrades()).orElse(new ArrayList<>()));
-        droppedGrades = ofNullable(droppedGrades).orElse(ofNullable(entity.getDroppedGrades()).orElse(new ArrayList<>()));
+        maturska = null;
+
+        ArrayList<Integer> tmpGrades = new ArrayList<>();
+        for (int i = 0; i < entity.getSubjectOrientation().getSubjects().size(); i++) {
+            tmpGrades.add(0);
+        }
+        grades = ofNullable(grades).orElse(ofNullable(entity.getGrades()).orElse(tmpGrades));
+
+        ArrayList<Integer> tmpDroppedGrades = new ArrayList<>();
+        for (int i = 0; i < entity.getSubjectOrientation().getSubjects().size(); i++) {
+            tmpDroppedGrades.add(0);
+        }
+        droppedGrades = ofNullable(droppedGrades).orElse(ofNullable(entity.getDroppedGrades()).orElse(tmpDroppedGrades));
 
         return this;
     }
@@ -73,7 +86,7 @@ public class StudentDtoDecorator extends StudentDto {
     }
 
     private int getCpyCtr() {
-        // TODO: Implement
+        // TODO: Implement if needed
         return 0;
     }
 }
