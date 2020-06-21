@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 @SuperBuilder
 @Data
@@ -20,7 +19,7 @@ public class SchoolClassDto {
     public String name;
     public YearDto year;
     public List<StudentDto> students;
-    public Set<SubjectOrientationDto> subjectOrientations;
+    public List<SubjectOrientationDto> subjectOrientations;
     public TeacherDto teacher;
 
     @JsonIgnore

@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/teachers
+Content-Type: application/json
+password:CNrGIy0j9H
+
+{
+  "username": "WOhKO8zB6L"
+}
+
+###

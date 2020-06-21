@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static java.util.Optional.ofNullable;
 
@@ -39,6 +38,10 @@ public class SchoolClassDtoService {
         return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
     }
 
+    public SchoolClass findEntity(String id) {
+        return schoolClassRepository.getOne(id);
+    }
+
     public SchoolClassDto save(SchoolClassDto schoolClassDto, boolean update) {
 
         // TODO: Differentiate the operations between Admin and Teacher
@@ -59,7 +62,7 @@ public class SchoolClassDtoService {
 
         if (schoolClass.getId() == null) {
             schoolClass.setStudents(new ArrayList<>());
-            schoolClass.setSubjectOrientations(new HashSet<>());
+            schoolClass.setSubjectOrientations(new ArrayList<>());
         } else {
             // If any updates should happen on the students, it should be from the students service, not from the SchoolClass services
             schoolClassDto.setStudents(null);

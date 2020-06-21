@@ -6,7 +6,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -44,8 +43,8 @@ public class SubjectOrientation {
     private Year year;
 
     @ManyToMany
-    private Set<SchoolClass> classes;
+    private List<SchoolClass> classes;
 
     @OneToMany(mappedBy = "subjectOrientation", cascade = CascadeType.ALL)
-    private Set<Student> students;
+    private List<Student> students;
 }

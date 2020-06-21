@@ -4,6 +4,7 @@ import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.services.decorators.SchoolClassDtoDecorator;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Repository;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Repository;
 
 // , uses = {SubjectOrientationMapper.class, TeacherMapper.class, StudentMapper.class, YearMapper.class}
 @Repository
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {SchoolMapper.class, YearMapper.class, StudentMapper.class})
 public interface SchoolClassMapper {
     SchoolClass toEntity(SchoolClassDto dto);
 
+    @Mapping(target = "teacher", ignore = true)
     SchoolClassDto toDto(SchoolClass entity);
 
     void updateEntity(SchoolClassDto dto, @MappingTarget SchoolClass entity);

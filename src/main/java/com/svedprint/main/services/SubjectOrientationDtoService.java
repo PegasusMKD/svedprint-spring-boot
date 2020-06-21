@@ -13,7 +13,7 @@ import com.svedprint.main.services.decorators.SubjectOrientationDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import static java.util.Optional.ofNullable;
 
@@ -45,8 +45,8 @@ public class SubjectOrientationDtoService {
         }
 
         if (subjectOrientation.getId() == null) {
-            subjectOrientation.setClasses(new HashSet<>());
-            subjectOrientation.setStudents(new HashSet<>());
+            subjectOrientation.setClasses(new ArrayList<>());
+            subjectOrientation.setStudents(new ArrayList<>());
         } else {
             subjectOrientation.setStudents(null);
             subjectOrientation.setClasses(null);

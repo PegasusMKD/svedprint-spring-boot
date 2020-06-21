@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 @SuperBuilder
 @Data
@@ -22,8 +21,8 @@ public class SubjectOrientationDto {
     public List<String> subjects;
     public List<String> shortNames;
     public YearDto year;
-    public Set<SchoolClassDto> classes;
-    public Set<StudentDto> students;
+    public List<SchoolClassDto> classes;
+    public List<StudentDto> students;
 
     @JsonIgnore
     public boolean isIdSet() {

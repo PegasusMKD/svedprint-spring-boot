@@ -61,17 +61,15 @@ public class StudentDtoDecorator extends StudentDto {
         // Should add mapper for the maturska
 //        maturska = ofNullable(maturska).orElse(ofNullable(entity.getMaturska()).orElse(null));
         maturska = null;
-
         ArrayList<Integer> tmpGrades = new ArrayList<>();
+        ArrayList<Integer> tmpDroppedGrades = new ArrayList<>();
         for (int i = 0; i < entity.getSubjectOrientation().getSubjects().size(); i++) {
             tmpGrades.add(0);
         }
-        grades = ofNullable(grades).orElse(ofNullable(entity.getGrades()).orElse(tmpGrades));
-
-        ArrayList<Integer> tmpDroppedGrades = new ArrayList<>();
         for (int i = 0; i < entity.getSubjectOrientation().getSubjects().size(); i++) {
             tmpDroppedGrades.add(0);
         }
+        grades = ofNullable(grades).orElse(ofNullable(entity.getGrades()).orElse(tmpGrades));
         droppedGrades = ofNullable(droppedGrades).orElse(ofNullable(entity.getDroppedGrades()).orElse(tmpDroppedGrades));
 
         return this;

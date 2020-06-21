@@ -78,7 +78,8 @@ public class TeacherDtoService {
         if (schoolClass == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
         } else {
-            teacherDto.setSchoolClass(schoolClassDtoService.findOne(schoolClass));
+            System.out.println("Gets called!");
+            teacher.setSchoolClass(schoolClassDtoService.findEntity(schoolClass));
         }
 
         TeacherDtoDecorator decorator = TeacherDtoDecorator.builder().build();

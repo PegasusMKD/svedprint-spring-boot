@@ -24,11 +24,13 @@ public class SchoolDtoService {
     }
 
     public SchoolDto save(SchoolDto schoolDto, boolean update) {
+        System.out.println(schoolDto);
         if (schoolDto == null) {
             return null;
         }
+        System.out.println("Got through the if...?");
         final School school = schoolDto.isIdSet() ? schoolRepository.getOne(schoolDto.getId()) : new School();
-
+        System.out.println(school);
         if (school.getId() == null && !update) {
             school.setYears(new ArrayList<>());
             school.setTeachers(new ArrayList<>());

@@ -2,11 +2,12 @@ package com.svedprint.main.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -39,9 +40,10 @@ public class SchoolClass {
     private List<Student> students;
 
     @ManyToMany
-    private Set<SubjectOrientation> subjectOrientations;
+    @Fetch(value = FetchMode.SELECT)
+    private List<SubjectOrientation> subjectOrientations;
 
-    @OneToOne
+    @OneToOne(mappedBy = "schoolClass")
     private Teacher teacher;
 
 }

@@ -51,6 +51,6 @@ public class Teacher {
     private School school;
 
     // TODO: Rework relation from OneToOne to a ManyToOne or something like that, so that professors can still exist
-    @OneToOne(mappedBy = "teacher")
+    @OneToOne
     private SchoolClass schoolClass;
 }
