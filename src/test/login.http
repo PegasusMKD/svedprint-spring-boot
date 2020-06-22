@@ -1,9 +1,9 @@
-POST http://localhost:8080/api/teachers
+POST http://35.234.92.150:8080/api/teachers
 Content-Type: application/json
-password:CNrGIy0j9H
+password:aOa4GoBfnV
 
 {
-  "username": "WOhKO8zB6L"
+  "username": "2FtQ7DahIw"
 }
 
 ###

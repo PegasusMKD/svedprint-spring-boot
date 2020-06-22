@@ -4,6 +4,7 @@ import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.TeacherDto;
 import com.svedprint.main.mappers.SchoolClassMapper;
 import com.svedprint.main.models.SchoolClass;
+import com.svedprint.main.models.Teacher;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.repositories.YearRepository;
@@ -79,5 +80,11 @@ public class SchoolClassDtoService {
         schoolClassMapper.updateEntity(decorator.init(schoolClass, update, yearRepository), schoolClass);
         return schoolClassMapper.toDto(schoolClassRepository.save(schoolClass));
     }
+
+    public SchoolClassDto getSchoolClassByUser(TeacherDto teacherDto) {
+        Teacher teacher = teacherDtoService.findEntityByToken(teacherDto.getToken());
+        return schoolClassMapper.toDto(teacher.getSchoolClass());
+    }
+
 
 }
