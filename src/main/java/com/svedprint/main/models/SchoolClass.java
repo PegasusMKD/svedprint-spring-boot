@@ -2,8 +2,6 @@ package com.svedprint.main.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -39,8 +37,7 @@ public class SchoolClass {
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Student> students;
 
-    @ManyToMany
-    @Fetch(value = FetchMode.SELECT)
+    @OneToMany(mappedBy = "classes")
     private List<SubjectOrientation> subjectOrientations;
 
     @OneToOne(mappedBy = "schoolClass")

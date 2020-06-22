@@ -32,6 +32,9 @@ public class SchoolClassDtoService {
     private SubjectOrientationRepository subjectOrientationRepository;
 
     @Autowired
+    private SubjectOrientationDtoService subjectOrientationDtoService;
+
+    @Autowired
     private TeacherDtoService teacherDtoService;
 
 

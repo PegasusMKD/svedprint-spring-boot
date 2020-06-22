@@ -21,7 +21,7 @@ public class SubjectOrientationDto {
     public List<String> subjects;
     public List<String> shortNames;
     public YearDto year;
-    public List<SchoolClassDto> classes;
+    public SchoolClassDto classes;
     public List<StudentDto> students;
 
     @JsonIgnore

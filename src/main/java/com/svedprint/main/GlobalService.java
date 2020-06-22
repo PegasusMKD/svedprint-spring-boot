@@ -65,7 +65,8 @@ public class GlobalService {
             List<SubjectOrientationDto> subjectOrientations = new ArrayList<>();
             for (SubjectOrientationDto subjectOrientationDto : mandatory) {
                 subjectOrientationDto.setYear(yearDto);
-                subjectOrientations.add(subjectOrientationDtoService.save(subjectOrientationDto, false));
+                subjectOrientationDto.setClasses(null);
+                subjectOrientations.add(subjectOrientationDtoService.oldSave(subjectOrientationDto, false));
             }
             subjectOrientationsMap.put(yearDto, subjectOrientations);
         }

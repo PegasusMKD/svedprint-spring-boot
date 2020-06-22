@@ -42,8 +42,8 @@ public class SubjectOrientation {
     @ManyToOne(fetch = FetchType.LAZY)
     private Year year;
 
-    @ManyToMany
-    private List<SchoolClass> classes;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private SchoolClass classes;
 
     @OneToMany(mappedBy = "subjectOrientation", cascade = CascadeType.ALL)
     private List<Student> students;

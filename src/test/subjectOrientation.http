@@ -1,0 +1,8 @@
+PUT http://localhost:8080/api/subjectOrientations
+Content-Type: application/json
+token: ViOpt2rXjoqHcKA8BJeD
+
+{
+}
+
+###
