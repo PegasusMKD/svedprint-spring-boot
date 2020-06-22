@@ -9,8 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.svedprint</groupId>
-    <artifactId>main</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>deployment</artifactId>
     <name>main</name>
     <description>New SvedPrint Back-End</description>
 
