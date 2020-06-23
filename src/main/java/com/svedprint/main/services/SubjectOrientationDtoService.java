@@ -60,11 +60,12 @@ public class SubjectOrientationDtoService {
             throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
         }
 
+        if (subjectOrientation.getSubjects() == null && subjectOrientationDto.getSubjects() == null) {
+            subjectOrientation.setSubjects(new ArrayList<>());
+        }
+
         if (subjectOrientation.getId() != null && !teacher.getSchoolClass().getSubjectOrientations().stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
             subjectOrientation = clone(subjectOrientation);
-            if (subjectOrientation.getSubjects() == null) {
-                subjectOrientation.setSubjects(new ArrayList<>());
-            }
             if (subjectOrientationDto.getSubjects() == null || subjectOrientationDto.getSubjects().isEmpty()) {
                 subjectOrientationDto.setSubjects(subjectOrientation.getSubjects());
             }
@@ -76,6 +77,9 @@ public class SubjectOrientationDtoService {
         if (subjectOrientation.getId() == null) {
             subjectOrientation.setStudents(new ArrayList<>());
         }
+
+        System.out.println("Entity: " + subjectOrientation.getSubjects());
+        System.out.println("DTO: " + subjectOrientationDto.getSubjects());
 
         SubjectOrientationDtoDecorator decorator = SubjectOrientationDtoDecorator.builder().build();
         subjectOrientationMapper.decorate(subjectOrientationDto, decorator);

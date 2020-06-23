@@ -21,7 +21,7 @@ public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
 
     private static <T> List<T> ofNullableList(List<T> elements, List<T> entityValues) {
         if (elements != null && elements.isEmpty()) {
-            if (entityValues.isEmpty()) {
+            if (entityValues != null && entityValues.isEmpty()) {
                 return new ArrayList<>();
             } else {
                 return entityValues;
