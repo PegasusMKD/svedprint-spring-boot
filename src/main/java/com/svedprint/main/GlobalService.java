@@ -100,7 +100,7 @@ public class GlobalService {
                 student.setSchoolClass(classDto);
                 ArrayList<SubjectOrientationDto> subjectOrientationsArray = new ArrayList<>(classDto.getSubjectOrientations());
                 student.setSubjectOrientation(subjectOrientationsArray.get(RandomUtils.nextInt(0, subjectOrientationsArray.size())));
-                studentDtoService.save(student, false);
+                studentDtoService.oldSave(student, false);
             }
         }
 

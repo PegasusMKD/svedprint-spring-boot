@@ -10,6 +10,7 @@ import com.svedprint.main.mappers.StudentMapper;
 import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.models.Student;
 import com.svedprint.main.models.SubjectOrientation;
+import com.svedprint.main.models.Teacher;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.repositories.StudentRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
@@ -40,7 +41,36 @@ public class StudentDtoService {
     @Autowired
     private TeacherDtoService teacherDtoService;
 
-    public StudentDto save(StudentDto dto, boolean update) {
+    public StudentDto save(StudentDto dto, String token, boolean update) {
+        if (dto == null) {
+            return null;
+        }
+
+        final Student student = dto.isIdSet() ? studentRepository.getOne(dto.getId()) : new Student();
+        final Teacher teacher = teacherDtoService.findEntityByToken(token);
+
+        String classId = ofNullable(dto.getSchoolClass()).map(SchoolClassDto::getId).orElse(ofNullable(student.getSchoolClass()).map(SchoolClass::getId).orElse(teacher.getSchoolClass().getId())); // null should be changed to teacher.getSchoolClass()
+        if (classId == null) {
+            throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
+        } else {
+            student.setSchoolClass(schoolClassRepository.getOne(classId));
+        }
+
+        String subjectOrientationId = ofNullable(dto.getSubjectOrientation()).map(SubjectOrientationDto::getId)
+                .orElse(ofNullable(student.getSubjectOrientation()).map(SubjectOrientation::getId).orElse(null));
+        if (subjectOrientationId == null) {
+            throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
+        } else {
+            student.setSubjectOrientation(subjectOrientationRepository.getOne(subjectOrientationId));
+        }
+
+        StudentDtoDecorator decorator = StudentDtoDecorator.builder().build();
+        studentMapper.decorate(dto, decorator);
+        studentMapper.updateEntity(decorator.init(student, update), student);
+        return studentMapper.toDto(studentRepository.save(student));
+    }
+
+    public StudentDto oldSave(StudentDto dto, boolean update) {
         if (dto == null) {
             return null;
         }
