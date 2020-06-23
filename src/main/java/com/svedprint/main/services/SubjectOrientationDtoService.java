@@ -74,7 +74,6 @@ public class SubjectOrientationDtoService {
             subjectOrientation.setStudents(new ArrayList<>());
         }
 
-
         SubjectOrientationDtoDecorator decorator = SubjectOrientationDtoDecorator.builder().build();
         subjectOrientationMapper.decorate(subjectOrientationDto, decorator);
         subjectOrientationMapper.updateEntity(decorator.init(subjectOrientation, update), subjectOrientation);
@@ -86,6 +85,7 @@ public class SubjectOrientationDtoService {
         dto.setId(null);
         return subjectOrientationMapper.toEntity(dto);
     }
+
 
     @Transactional
     public SubjectOrientationDto oldSave(SubjectOrientationDto subjectOrientationDto, boolean update) {

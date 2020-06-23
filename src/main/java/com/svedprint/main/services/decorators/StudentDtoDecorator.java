@@ -29,7 +29,6 @@ public class StudentDtoDecorator extends StudentDto {
         firstName = ofNullable(firstName).orElse(ofNullable(entity.getFirstName()).orElse("Име"));
         middleName = ofNullable(middleName).orElse(ofNullable(entity.getMiddleName()).orElse("Средно Име"));
         lastName = ofNullable(lastName).orElse(ofNullable(entity.getLastName()).orElse("Презиме"));
-        number = ofNullable(number).orElse(ofNullable(entity.getNumber()).orElse(getDecoratorNumber()));
         fathersName = ofNullable(fathersName).orElse(ofNullable(entity.getFathersName()).orElse("Татково име"));
         mothersName = ofNullable(mothersName).orElse(ofNullable(entity.getMothersName()).orElse("Мајкино име"));
         dateOfBirth = ofNullable(dateOfBirth).orElse(ofNullable(entity.getDateOfBirth()).orElse(new Date()));
@@ -52,7 +51,7 @@ public class StudentDtoDecorator extends StudentDto {
         lastSchoolName = ofNullable(lastSchoolName).orElse(ofNullable(entity.getLastSchoolName()).orElse(getDecoratorLastSchoolName()));
         lastBusinessNumber = ofNullable(lastBusinessNumber).orElse(ofNullable(entity.getLastBusinessNumber()).orElse("12345/5"));
         dateWhenTestimonyWasPrinted = ofNullable(dateWhenTestimonyWasPrinted).orElse(ofNullable(entity.getDateWhenTestimonyWasPrinted()).orElse(new GregorianCalendar(2004, Calendar.FEBRUARY, 11).getTime()));
-        citizenship = ofNullable(citizenship).orElse(ofNullable(entity.getCitizenship()).orElse("македонско/граќанин на Република Северна Македонија"));
+        citizenship = ofNullable(citizenship).orElse(ofNullable(entity.getCitizenship()).orElse("македонско/граѓанин на Република Северна Македонија"));
         nameOfSchool = null;
         optionalSubjects = ofNullable(optionalSubjects).orElse(ofNullable(entity.getOptionalSubjects()).orElse(""));
         diplomaBusinessNumber = ofNullable(diplomaBusinessNumber).orElse(ofNullable(entity.getDiplomaBusinessNumber()).orElse(0));
@@ -75,13 +74,11 @@ public class StudentDtoDecorator extends StudentDto {
         return this;
     }
 
+
     private String getDecoratorLastSchoolName() {
         return null;
     }
 
-    private Integer getDecoratorNumber() {
-        return null;
-    }
 
     private int getCpyCtr() {
         // TODO: Implement if needed

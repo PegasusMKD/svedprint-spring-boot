@@ -1,8 +1,32 @@
+GET http://localhost:8080/api/students/
+Content-Type: application/json
+token: ViOpt2rXjoqHcKA8BJeD
+
+###
+
+// Create student
 POST http://localhost:8080/api/students/
 Content-Type: application/json
+token: ViOpt2rXjoqHcKA8BJeD
 
 {
-  "token": "ViOpt2rXjoqHcKA8BJeD"
+  "passedExam": "DIDNT_PASS",
+  "subjectOrientation": {
+    "id": "4d3cd0ab-75b4-4753-aff1-35006c69cee7"
+  }
+}
+
+###
+
+// Update student
+PUT http://localhost:8080/api/students/
+Content-Type: application/json
+token: ViOpt2rXjoqHcKA8BJeD
+
+{
+  "id": "f6c53b12-4165-4eb0-9ad3-2b040f246ec0",
+  "number": 10,
+  "firstName": "Darijan, The Shallow Copy"
 }
 
 ###

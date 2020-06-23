@@ -3,7 +3,6 @@ package com.svedprint.main.services;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.StudentDto;
 import com.svedprint.main.dtos.SubjectOrientationDto;
-import com.svedprint.main.dtos.TeacherDto;
 import com.svedprint.main.exceptions.SvedPrintException;
 import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.StudentMapper;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +42,7 @@ public class StudentDtoService {
     @Autowired
     private TeacherDtoService teacherDtoService;
 
+
     @Transactional
     public StudentDto save(StudentDto dto, String token, boolean update) {
         if (dto == null) {
@@ -58,9 +59,10 @@ public class StudentDtoService {
             student.setSchoolClass(schoolClassRepository.getOne(classId));
         }
 
+        getDecoratorNumber(teacher.getSchoolClass().getStudents(), student, dto); // TODO: Might still be bugged when transferring student from class to class if "number" is the same
         String subjectOrientationId = ofNullable(dto.getSubjectOrientation()).map(SubjectOrientationDto::getId)
                 .orElse(ofNullable(student.getSubjectOrientation()).map(SubjectOrientation::getId).orElse(null));
-        if (subjectOrientationId == null) {
+        if (subjectOrientationId == null) { // TODO: Rework it so that it searches in the orientations of the class
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
         } else {
             student.setSubjectOrientation(subjectOrientationRepository.getOne(subjectOrientationId));
@@ -71,6 +73,7 @@ public class StudentDtoService {
         studentMapper.updateEntity(decorator.init(student, update), student);
         return studentMapper.toDto(studentRepository.save(student));
     }
+
 
     @Transactional
     public StudentDto oldSave(StudentDto dto, boolean update) {
@@ -101,9 +104,36 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
+
     @Transactional(readOnly = true)
-    public List<StudentDto> getAllStudents(TeacherDto teacherDto) {
-        return teacherDtoService.findEntityByToken(teacherDto.getToken()).getSchoolClass().getStudents()
+    public List<StudentDto> getAllStudents(String token) {
+        return teacherDtoService.findEntityByToken(token).getSchoolClass().getStudents()
                 .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void getDecoratorNumber(List<Student> students, Student entity, StudentDto studentDto) {
+        if (studentDto.getNumber() == null && entity.getNumber() == null) {
+            studentDto.setNumber(students.size() + 1);
+
+        } else if (studentDto.getNumber() == null && entity.getNumber() != null) {
+            studentDto.setNumber(entity.getNumber());
+
+        } else if (studentDto.getNumber() > entity.getNumber()) {
+            List<Student> iterableStudents = new ArrayList<>(students.subList(entity.getNumber(), studentDto.getNumber()));
+            for (Student student : iterableStudents) {
+                student.setNumber(student.getNumber() - 1);
+            }
+            studentRepository.saveAll(iterableStudents);
+
+        } else if (studentDto.getNumber() < entity.getNumber()) {
+            List<Student> iterableStudents = new ArrayList<>(students.subList(studentDto.getNumber() - 1, entity.getNumber() - 1));
+            System.out.println(iterableStudents.size());
+            for (Student student : iterableStudents) {
+                student.setNumber(student.getNumber() + 1);
+            }
+            studentRepository.saveAll(iterableStudents);
+        }
     }
 }
