@@ -41,12 +41,12 @@ token: ViOpt2rXjoqHcKA8BJeD
 
 // Create an orientation (only shortName is mandatory), also, copies are blocked (except in a special case) and if
 // the orientation already exists, it finds it, and makes a copy of it, instead of just sending a relation to the class
-POST http://localhost:8080/api/subjectOrientations
+POST http://35.234.92.150:8080/api/subjectOrientations
 Content-Type: application/json
-token: ViOpt2rXjoqHcKA8BJeD
+token: z6ZedxKFzce5hElfiEKT
 
 {
-  "shortName": "ПМБ"
+  "shortName": "ПМА"
 }
 
 ###

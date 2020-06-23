@@ -62,6 +62,9 @@ public class SubjectOrientationDtoService {
 
         if (subjectOrientation.getId() != null && !teacher.getSchoolClass().getSubjectOrientations().stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
             subjectOrientation = clone(subjectOrientation);
+            if (subjectOrientation.getSubjects() == null) {
+                subjectOrientation.setSubjects(new ArrayList<>());
+            }
             if (subjectOrientationDto.getSubjects() == null || subjectOrientationDto.getSubjects().isEmpty()) {
                 subjectOrientationDto.setSubjects(subjectOrientation.getSubjects());
             }
