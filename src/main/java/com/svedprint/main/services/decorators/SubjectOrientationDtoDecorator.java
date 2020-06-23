@@ -71,7 +71,7 @@ public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
         fullName = ofNullable(fullName).orElse(ofNullable(fullName).orElse("Целосно име"));
         shortNames = ofNullable(shortNames).orElse(ofNullable(shortNames).orElse(new ArrayList<>()));
         subjects = ofNullableList(subjects, entity.getSubjects());
-        if (subjects.size() != entity.getSubjects().size()) {
+        if (subjects != null && subjects.size() != entity.getSubjects().size()) {
             handleStudents(subjects, entity, subjects.size() > entity.getSubjects().size());
         }
         return this;
