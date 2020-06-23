@@ -16,6 +16,7 @@ import de.mkammerer.argon2.Argon2Factory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static java.util.Optional.ofNullable;
 
@@ -37,14 +38,17 @@ public class TeacherDtoService {
     private SchoolClassDtoService schoolClassDtoService;
 
 
+    @Transactional(readOnly = true)
     public TeacherDto findOne(String id, String token) {
         return teacherMapper.toDto(teacherRepository.findByIdOrToken(id, token));
     }
 
+    @Transactional(readOnly = true)
     public Teacher findEntityByToken(String token) {
         return teacherRepository.findByToken(token);
     }
 
+    @Transactional
     public TeacherDto login(TeacherDto teacherDto, String password) {
         Teacher teacher = teacherRepository.findByUsername(teacherDto.getUsername());
         if (argon2.verify(teacher.getPassword(), password)) {
@@ -59,6 +63,7 @@ public class TeacherDtoService {
         return null;
     }
 
+    @Transactional
     public TeacherDto save(TeacherDto teacherDto, boolean update) {
         if (teacherDto == null) {
             return null;

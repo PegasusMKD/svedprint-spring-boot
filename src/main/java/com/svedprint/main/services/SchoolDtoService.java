@@ -7,6 +7,7 @@ import com.svedprint.main.repositories.SchoolRepository;
 import com.svedprint.main.services.decorators.SchoolDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,12 @@ public class SchoolDtoService {
     @Autowired
     private SchoolMapper schoolMapper;
 
+    @Transactional(readOnly = true)
     public SchoolDto findOne(String id) {
         return schoolMapper.toDto(schoolRepository.getOne(id));
     }
 
+    @Transactional
     public SchoolDto save(SchoolDto schoolDto, boolean update) {
         System.out.println(schoolDto);
         if (schoolDto == null) {

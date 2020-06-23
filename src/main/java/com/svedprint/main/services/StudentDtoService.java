@@ -17,6 +17,7 @@ import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.services.decorators.StudentDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ public class StudentDtoService {
     @Autowired
     private TeacherDtoService teacherDtoService;
 
+    @Transactional
     public StudentDto save(StudentDto dto, String token, boolean update) {
         if (dto == null) {
             return null;
@@ -70,6 +72,7 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
+    @Transactional
     public StudentDto oldSave(StudentDto dto, boolean update) {
         if (dto == null) {
             return null;
@@ -98,6 +101,7 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
+    @Transactional(readOnly = true)
     public List<StudentDto> getAllStudents(TeacherDto teacherDto) {
         return teacherDtoService.findEntityByToken(teacherDto.getToken()).getSchoolClass().getStudents()
                 .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());

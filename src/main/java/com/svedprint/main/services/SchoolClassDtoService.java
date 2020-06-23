@@ -11,6 +11,7 @@ import com.svedprint.main.repositories.YearRepository;
 import com.svedprint.main.services.decorators.SchoolClassDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -42,10 +43,12 @@ public class SchoolClassDtoService {
         return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
     }
 
+    @Transactional(readOnly = true)
     public SchoolClass findEntity(String id) {
         return schoolClassRepository.getOne(id);
     }
 
+    @Transactional
     public SchoolClassDto save(SchoolClassDto schoolClassDto, boolean update) {
 
         // TODO: Differentiate the operations between Admin and Teacher
@@ -84,6 +87,7 @@ public class SchoolClassDtoService {
         return schoolClassMapper.toDto(schoolClassRepository.save(schoolClass));
     }
 
+    @Transactional(readOnly = true)
     public SchoolClassDto getSchoolClassByUser(TeacherDto teacherDto) {
         Teacher teacher = teacherDtoService.findEntityByToken(teacherDto.getToken());
         return schoolClassMapper.toDto(teacher.getSchoolClass());

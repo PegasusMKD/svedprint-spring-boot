@@ -14,6 +14,7 @@ import com.svedprint.main.repositories.YearRepository;
 import com.svedprint.main.services.decorators.SubjectOrientationDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class SubjectOrientationDtoService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Transactional
     public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
         if (subjectOrientationDto == null) {
             return null;
@@ -85,6 +87,7 @@ public class SubjectOrientationDtoService {
         return subjectOrientationMapper.toEntity(dto);
     }
 
+    @Transactional
     public SubjectOrientationDto oldSave(SubjectOrientationDto subjectOrientationDto, boolean update) {
         if (subjectOrientationDto == null) {
             return null;
@@ -113,12 +116,14 @@ public class SubjectOrientationDtoService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<SubjectOrientationDto> get(String token) {
         return teacherDtoService.findEntityByToken(token).getSchoolClass().getSubjectOrientations().stream()
                 .map(subjectOrientation -> subjectOrientationMapper.toDto(subjectOrientation)).collect(Collectors.toList());
     }
 
 
+    @Transactional
     public boolean delete(SubjectOrientationDto subjectOrientationDto, String token) {
         try {
             Teacher teacher = teacherDtoService.findEntityByToken(token);
