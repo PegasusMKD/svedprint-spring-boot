@@ -45,4 +45,14 @@ public class StudentController {
 
         return ResponseEntity.ok(res);
     }
+
+    @DeleteMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudentDto> delete(@RequestBody StudentDto studentDto, @RequestHeader String token) {
+        boolean res = studentDtoService.delete(studentDto, token);
+        if (!res) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
 }

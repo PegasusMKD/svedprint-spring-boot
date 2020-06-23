@@ -30,3 +30,13 @@ token: ViOpt2rXjoqHcKA8BJeD
 }
 
 ###
+
+DELETE http://localhost:8080/api/students/
+Content-Type: application/json
+token: ViOpt2rXjoqHcKA8BJeD
+
+{
+  "id": "65bb969d-bbe0-4788-b329-433d0b1a9d22"
+}
+
+###

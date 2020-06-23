@@ -43,6 +43,12 @@ public class StudentDtoService {
     private TeacherDtoService teacherDtoService;
 
 
+    @Transactional(readOnly = true)
+    public List<StudentDto> getAllStudents(String token) {
+        return teacherDtoService.findEntityByToken(token).getSchoolClass().getStudents()
+                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());
+    }
+
     @Transactional
     public StudentDto save(StudentDto dto, String token, boolean update) {
         if (dto == null) {
@@ -104,13 +110,19 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
-
-    @Transactional(readOnly = true)
-    public List<StudentDto> getAllStudents(String token) {
-        return teacherDtoService.findEntityByToken(token).getSchoolClass().getStudents()
-                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());
+    @Transactional
+    public boolean delete(StudentDto studentDto, String token) {
+        if (studentDto == null || studentDto.getId() == null) {
+            return false;
+        }
+        final Teacher teacher = teacherDtoService.findEntityByToken(token);
+        if (teacher.getSchoolClass().getStudents().stream().map(Student::getId).collect(Collectors.toList()).contains(studentDto.getId())) {
+            studentRepository.deleteById(studentDto.getId());
+            return true;
+        } else {
+            throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
+        }
     }
-
 
     @Transactional
     public void getDecoratorNumber(List<Student> students, Student entity, StudentDto studentDto) {
