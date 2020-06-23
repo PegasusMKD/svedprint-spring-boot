@@ -27,7 +27,8 @@ public class Year {
     private String id;
 
     @Column(name = "date_when_testimony_confirmed")
-    private Date dateWhenTestimonyConfirmed;
+    @Temporal(TemporalType.DATE)
+    private Date dateWhenTestimonyConfirmed; // Date of the meeting when the teachers confirmed the grades
 
     @Column(name = "year_name", length = 4)
     private String name; // TODO: Maybe make this (as well as previous years) enum

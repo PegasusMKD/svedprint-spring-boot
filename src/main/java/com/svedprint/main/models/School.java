@@ -32,7 +32,8 @@ public class School {
     @Column(name = "act_number", length = 50)
     private String actNumber; // TODO: Refactor this into a List for GYMNASIUM and PROFESSIONAL
 
-    @Column(name="act_date")
+    @Column(name = "act_date")
+    @Temporal(TemporalType.DATE)
     private Date actDate; // TODO: Refactor this into a list for GYMNASIUM and PROFESSIONAL
 
     @Column(name = "director_name", length = 60)
@@ -57,9 +58,11 @@ public class School {
     private String lastDigitsOfYear;
 
     @ElementCollection
+    @Temporal(TemporalType.DATE)
     private List<Date> printDatesForDiploma;
 
     @ElementCollection
+    @Temporal(TemporalType.DATE)
     private List<Date> printDatesForTestimony;
 
 

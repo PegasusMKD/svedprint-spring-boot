@@ -50,22 +50,23 @@ public class Student {
     @Column(name = "number")
     private Integer number;
 
-    @Column(name="fathers_name", length = 100)
+    @Column(name = "fathers_name", length = 100)
     private String fathersName;
 
-    @Column(name="mothers_name", length = 100)
+    @Column(name = "mothers_name", length = 100)
     private String mothersName;
 
-    @Column(name="date_of_birth", length = 10)
+    @Column(name = "date_of_birth", length = 10)
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
-    @Column(name="place_of_residence", length = 200)
+    @Column(name = "place_of_residence", length = 200)
     private String placeOfResidence;
 
-    @Column(name="place_of_birth", length = 200)
+    @Column(name = "place_of_birth", length = 200)
     private String placeOfBirth;
 
-    @Column(name="times_studied_year", length = 10)
+    @Column(name = "times_studied_year", length = 10)
     private String timesStudiedYear;
 
     @Column(name="times_taken_exam", length = 10)
@@ -124,6 +125,7 @@ public class Student {
     private String lastBusinessNumber; // Деловоден број
 
     @Column(name = "date_when_testimony_was_printed")
+    @Temporal(TemporalType.DATE)
     private Date dateWhenTestimonyWasPrinted; // Testimony - Свидетелство
 
     @Column(name="citizenship")
@@ -148,6 +150,7 @@ public class Student {
     private Map<String, PromData> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
 
     @ElementCollection
+    @OrderColumn(name = "idx")
     private List<Integer> grades;
 
     @ElementCollection

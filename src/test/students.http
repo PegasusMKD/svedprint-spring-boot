@@ -1,8 +1,8 @@
-POST http://34.107.121.20:8080/api/students/
+POST http://localhost:8080/api/students/
 Content-Type: application/json
 
 {
-  "token": "lIaN4LmgHGw80xEO2kMw"
+  "token": "ViOpt2rXjoqHcKA8BJeD"
 }
 
 ###

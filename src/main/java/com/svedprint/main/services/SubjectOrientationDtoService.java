@@ -8,6 +8,7 @@ import com.svedprint.main.mappers.SubjectOrientationMapper;
 import com.svedprint.main.models.SubjectOrientation;
 import com.svedprint.main.models.Teacher;
 import com.svedprint.main.models.Year;
+import com.svedprint.main.repositories.StudentRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.repositories.YearRepository;
 import com.svedprint.main.services.decorators.SubjectOrientationDtoDecorator;
@@ -27,14 +28,16 @@ public class SubjectOrientationDtoService {
     private SubjectOrientationRepository subjectOrientationRepository;
 
     @Autowired
+    private SubjectOrientationMapper subjectOrientationMapper;
+
+    @Autowired
     private TeacherDtoService teacherDtoService;
 
     @Autowired
     private YearRepository yearRepository;
 
     @Autowired
-    private SubjectOrientationMapper subjectOrientationMapper;
-
+    private StudentRepository studentRepository;
 
     public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
         if (subjectOrientationDto == null) {
@@ -67,9 +70,8 @@ public class SubjectOrientationDtoService {
         subjectOrientationDto.setClasses(null);
         if (subjectOrientation.getId() == null) {
             subjectOrientation.setStudents(new ArrayList<>());
-        } else {
-            subjectOrientation.setStudents(null);
         }
+
 
         SubjectOrientationDtoDecorator decorator = SubjectOrientationDtoDecorator.builder().build();
         subjectOrientationMapper.decorate(subjectOrientationDto, decorator);
