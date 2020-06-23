@@ -40,22 +40,22 @@ public class SubjectOrientationDtoService {
         if (subjectOrientationDto == null) {
             return null;
         }
-        System.out.println(subjectOrientationDto);
+        if (!update && subjectOrientationDto.getShortName() == null) {
+            throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
+        }
 
         final Teacher teacher = teacherDtoService.findEntityByToken(token);
         List<SubjectOrientation> subjectOrientations = subjectOrientationRepository.findAllByShortNameAndYear(subjectOrientationDto.getShortName(), teacher.getSchoolClass().getYear());
         SubjectOrientation subjectOrientation = !update ? !subjectOrientations.isEmpty() ? subjectOrientations.get(0) : new SubjectOrientation() :
                 subjectOrientationRepository.findByShortNameAndClasses(subjectOrientationDto.getShortName(), teacher.getSchoolClass());
 
-        List<SubjectOrientation> teacherClassOrientations = subjectOrientationRepository.findAllByClasses(teacher.getSchoolClass());
-
         if (subjectOrientation == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
-        } else if (!update && teacherClassOrientations.stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
+        } else if (!update && teacher.getSchoolClass().getSubjectOrientations().stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
             throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
         }
 
-        if (subjectOrientation.getId() != null && !teacherClassOrientations.stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
+        if (subjectOrientation.getId() != null && !teacher.getSchoolClass().getSubjectOrientations().stream().map(SubjectOrientation::getShortName).collect(Collectors.toList()).contains(subjectOrientation.getShortName())) {
             subjectOrientation = clone(subjectOrientation);
             if (subjectOrientationDto.getSubjects() == null || subjectOrientationDto.getSubjects().isEmpty()) {
                 subjectOrientationDto.setSubjects(subjectOrientation.getSubjects());
@@ -111,4 +111,28 @@ public class SubjectOrientationDtoService {
     }
 
 
+    public List<SubjectOrientationDto> get(String token) {
+        return teacherDtoService.findEntityByToken(token).getSchoolClass().getSubjectOrientations().stream()
+                .map(subjectOrientation -> subjectOrientationMapper.toDto(subjectOrientation)).collect(Collectors.toList());
+    }
+
+
+    public boolean delete(SubjectOrientationDto subjectOrientationDto, String token) {
+        try {
+            Teacher teacher = teacherDtoService.findEntityByToken(token);
+            if (!subjectOrientationDto.isIdSet()) {
+                throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
+            }
+            SubjectOrientation subjectOrientation = subjectOrientationRepository.getOne(subjectOrientationDto.getId());
+            if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation)) {
+                subjectOrientationRepository.delete(subjectOrientation);
+            } else {
+                throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
+            }
+            return true;
+        } catch (Exception e) {
+            // TODO: Add logger here
+            return false;
+        }
+    }
 }
