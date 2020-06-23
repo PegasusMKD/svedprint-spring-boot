@@ -19,9 +19,9 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
 
-    private static <T> List<T> ofNullableList(List<T> elements, List<T> entityValues, SubjectOrientation entity) {
+    private static <T> List<T> ofNullableList(List<T> elements, List<T> entityValues) {
         if (elements != null && elements.isEmpty()) {
-            if (entity.getSubjects().isEmpty()) {
+            if (entityValues.isEmpty()) {
                 return new ArrayList<>();
             } else {
                 return entityValues;
@@ -70,7 +70,7 @@ public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
         shortName = ofNullable(shortName).orElse(ofNullable(entity.getShortName()).orElse("Име"));
         fullName = ofNullable(fullName).orElse(ofNullable(fullName).orElse("Целосно име"));
         shortNames = ofNullable(shortNames).orElse(ofNullable(shortNames).orElse(new ArrayList<>()));
-        subjects = ofNullableList(subjects, entity.getSubjects(), entity);
+        subjects = ofNullableList(subjects, entity.getSubjects());
         if (subjects.size() != entity.getSubjects().size()) {
             handleStudents(subjects, entity, subjects.size() > entity.getSubjects().size());
         }
