@@ -17,7 +17,7 @@ import com.svedprint.main.services.decorators.StudentDtoDecorator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
@@ -68,8 +68,8 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
-    public Set<StudentDto> getAllStudents(TeacherDto teacherDto) {
+    public List<StudentDto> getAllStudents(TeacherDto teacherDto) {
         return teacherDtoService.findEntityByToken(teacherDto.getToken()).getSchoolClass().getStudents()
-                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toSet());
+                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());
     }
 }

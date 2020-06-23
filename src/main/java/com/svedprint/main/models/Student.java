@@ -149,16 +149,17 @@ public class Student {
     @ManyToMany(cascade = CascadeType.ALL)
     private Map<String, PromData> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn(name = "idx")
     private List<Integer> grades;
 
     @ElementCollection
     private List<Integer> droppedGrades;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SchoolClass schoolClass;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SubjectOrientation subjectOrientation;
+
 }

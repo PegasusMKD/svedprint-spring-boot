@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,8 +22,8 @@ public class StudentController {
     private StudentDtoService studentDtoService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<StudentDto>> getAllStudents(@RequestBody TeacherDto teacherDto) {
-        Set<StudentDto> res = studentDtoService.getAllStudents(teacherDto);
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestBody TeacherDto teacherDto) {
+        List<StudentDto> res = studentDtoService.getAllStudents(teacherDto);
         if (res == null) {
             return ResponseEntity.badRequest().build();
         }

@@ -34,13 +34,14 @@ public class SchoolClass {
     // TODO: Check if "otpishani", "otstraneti", "napushtile", "zapishale" is needed
 
     //TODO: Add Relation to SubjectOrientation
-    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "schoolClass")
+    @OrderBy(value = "number asc")
     private List<Student> students;
 
     @OneToMany(mappedBy = "classes")
     private List<SubjectOrientation> subjectOrientations;
 
-    @OneToOne(mappedBy = "schoolClass")
+    @OneToOne(mappedBy = "schoolClass", fetch = FetchType.LAZY)
     private Teacher teacher;
 
 }
