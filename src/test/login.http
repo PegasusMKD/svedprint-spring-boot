@@ -1,4 +1,4 @@
-POST http://35.234.92.150:8080/api/teachers
+POST http://34.107.121.20:8080/api/teachers
 Content-Type: application/json
 password:pfvTi1NzxE
 

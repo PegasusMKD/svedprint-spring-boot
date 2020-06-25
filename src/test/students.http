@@ -1,6 +1,6 @@
-GET http://localhost:8080/api/students/
+GET http://34.107.121.20:8080/api/students/
 Content-Type: application/json
-token: ViOpt2rXjoqHcKA8BJeD
+token: 9ACrw84fWdOsQDwUcVGP
 
 ###
 
@@ -19,14 +19,16 @@ token: ViOpt2rXjoqHcKA8BJeD
 ###
 
 // Update student
-PUT http://localhost:8080/api/students/
+PUT http://34.107.121.20:8080/api/students/
 Content-Type: application/json
-token: ViOpt2rXjoqHcKA8BJeD
+token: 2UXI5tUiQmJ5NslBjAIA
 
 {
-  "id": "f6c53b12-4165-4eb0-9ad3-2b040f246ec0",
-  "number": 10,
-  "firstName": "Darijan, The Shallow Copy"
+  "id": "6f8188b1-6bf1-47b9-87b2-a4f3d11c36b5",
+  "subjectOrientation": {
+  "id": "e1265563-4d42-4299-80e1-16c6f31f0ee2"
+  },
+  "grades": [0,0]
 }
 
 ###

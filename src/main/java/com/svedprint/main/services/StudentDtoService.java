@@ -126,6 +126,10 @@ public class StudentDtoService {
 
     @Transactional
     public void getDecoratorNumber(List<Student> students, Student entity, StudentDto studentDto) {
+        if(studentDto.getNumber() != null && entity.getNumber() == null) {
+            return;
+        }
+
         if (studentDto.getNumber() == null && entity.getNumber() == null) {
             studentDto.setNumber(students.size() + 1);
 

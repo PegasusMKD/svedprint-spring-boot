@@ -19,9 +19,9 @@ token: gEbbFi3BWQjtHbKDlZud
 
 ###
 // Example of getting the user's orientations
-GET http://localhost:8080/api/subjectOrientations
+GET http://34.107.121.20:8080/api/subjectOrientations
 Content-Type: application/json
-token: ViOpt2rXjoqHcKA8BJeD
+token: 9ACrw84fWdOsQDwUcVGP
 
 ###
 // Update an orientation
