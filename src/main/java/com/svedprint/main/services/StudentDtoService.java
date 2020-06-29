@@ -103,7 +103,7 @@ public class StudentDtoService {
         for (String subject : newOrientationSubjects) {
             if (!oldOrientationSubjects.contains(subject)) {
                 int idxSubject = newOrientationSubjects.indexOf(subject);
-                entityGrades.add(0);
+                entityGrades.add(idxSubject, 0);
             }
         }
 
