@@ -26,7 +26,6 @@ import static java.util.Optional.ofNullable;
 
 @Service
 public class StudentDtoService {
-
     @Autowired
     private StudentRepository studentRepository;
 
@@ -71,7 +70,15 @@ public class StudentDtoService {
         if (subjectOrientationId == null) { // TODO: Rework it so that it searches in the orientations of the class
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
         } else {
-            student.setSubjectOrientation(subjectOrientationRepository.getOne(subjectOrientationId));
+            SubjectOrientation subjectOrientation = subjectOrientationRepository.getOne(subjectOrientationId);
+            if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation)) {
+                // TODO: Add grades handler for changing subjectOrientation
+                handleSubjectOrientationGrades(student, subjectOrientation);
+                //
+                student.setSubjectOrientation(subjectOrientation);
+            } else {
+                throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
+            }
         }
 
         StudentDtoDecorator decorator = StudentDtoDecorator.builder().build();
@@ -80,6 +87,28 @@ public class StudentDtoService {
         return studentMapper.toDto(studentRepository.save(student));
     }
 
+
+    private void handleSubjectOrientationGrades(Student entity, SubjectOrientation newSubjectOrientation) {
+        List<Integer> entityGrades = entity.getGrades();
+        List<String> oldOrientationSubjects = new ArrayList<>(entity.getSubjectOrientation().getSubjects());
+        List<String> newOrientationSubjects = new ArrayList<>(newSubjectOrientation.getSubjects());
+        for (String subject : oldOrientationSubjects) {
+            if (!newOrientationSubjects.contains(subject)) {
+                int idxSubject = oldOrientationSubjects.indexOf(subject);
+                entityGrades.remove(idxSubject);
+                oldOrientationSubjects.remove(idxSubject);
+            }
+        }
+
+        for (String subject : newOrientationSubjects) {
+            if (!oldOrientationSubjects.contains(subject)) {
+                int idxSubject = newOrientationSubjects.indexOf(subject);
+                entityGrades.add(0);
+            }
+        }
+
+        entity.setGrades(entityGrades);
+    }
 
     @Transactional
     public StudentDto oldSave(StudentDto dto, boolean update) {

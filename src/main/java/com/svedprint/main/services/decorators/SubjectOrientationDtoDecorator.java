@@ -33,7 +33,6 @@ public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
     private static void handleStudents(List<String> subjects, SubjectOrientation entity, boolean add) {
 
         List<String> entitySubjects = entity.getSubjects();
-        System.out.println(entity.getId());
         if (add) {
             for (Student student : entity.getStudents()) {
                 List<Integer> grades = student.getGrades();
