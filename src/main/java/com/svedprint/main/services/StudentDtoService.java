@@ -71,7 +71,7 @@ public class StudentDtoService {
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
         } else {
             SubjectOrientation subjectOrientation = subjectOrientationRepository.getOne(subjectOrientationId);
-            if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation)) {
+            if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation) && !subjectOrientationId.equals(student.getSubjectOrientation().getId())) {
                 // TODO: Add grades handler for changing subjectOrientation (This works only if subjectOrientation update is separate)
                 handleSubjectOrientationGrades(dto, student, subjectOrientation);
                 //
