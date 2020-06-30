@@ -72,8 +72,8 @@ public class StudentDtoService {
         } else {
             SubjectOrientation subjectOrientation = subjectOrientationRepository.getOne(subjectOrientationId);
             if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation)) {
-                // TODO: Add grades handler for changing subjectOrientation
-                handleSubjectOrientationGrades(student, subjectOrientation);
+                // TODO: Add grades handler for changing subjectOrientation (This works only if subjectOrientation update is separate)
+                handleSubjectOrientationGrades(dto, student, subjectOrientation);
                 //
                 student.setSubjectOrientation(subjectOrientation);
             } else {
@@ -88,7 +88,7 @@ public class StudentDtoService {
     }
 
 
-    private void handleSubjectOrientationGrades(Student entity, SubjectOrientation newSubjectOrientation) {
+    private void handleSubjectOrientationGrades(StudentDto dto, Student entity, SubjectOrientation newSubjectOrientation) {
         List<Integer> entityGrades = entity.getGrades();
         List<String> oldOrientationSubjects = new ArrayList<>(entity.getSubjectOrientation().getSubjects());
         List<String> newOrientationSubjects = new ArrayList<>(newSubjectOrientation.getSubjects());
@@ -107,7 +107,7 @@ public class StudentDtoService {
             }
         }
 
-        entity.setGrades(entityGrades);
+        dto.setGrades(entityGrades);
     }
 
     @Transactional
