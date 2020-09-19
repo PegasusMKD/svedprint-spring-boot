@@ -18,6 +18,7 @@ public interface StudentMapper {
     Student toEntity(StudentDto dto);
 
     @Mapping(target = "schoolClass", ignore = true)
+    @Mapping(target = "maturska", ignore = true)
     StudentDto toDto(Student entity);
 
     void updateEntity(StudentDto dto, @MappingTarget Student entity);

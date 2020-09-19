@@ -4,9 +4,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
-@SuperBuilder
+@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

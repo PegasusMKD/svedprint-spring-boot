@@ -4,13 +4,12 @@ import com.svedprint.main.dtos.helperDtos.Identifiable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class TeacherDto extends Identifiable<String> {
     protected String firstName;

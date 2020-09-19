@@ -5,6 +5,7 @@ import com.svedprint.main.dtos.TeacherDto;
 import com.svedprint.main.mappers.SchoolClassMapper;
 import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.models.Teacher;
+import com.svedprint.main.models.Year;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.repositories.YearRepository;
@@ -24,20 +25,16 @@ public class SchoolClassDtoService {
     private SchoolClassRepository schoolClassRepository;
 
     @Autowired
-    private YearRepository yearRepository;
+    private YearDtoService yearDtoService;
 
     @Autowired
     private SchoolClassMapper schoolClassMapper;
-
-    @Autowired
-    private SubjectOrientationRepository subjectOrientationRepository;
 
     @Autowired
     private SubjectOrientationDtoService subjectOrientationDtoService;
 
     @Autowired
     private TeacherDtoService teacherDtoService;
-
 
     public SchoolClassDto findOne(String id) {
         return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
@@ -80,10 +77,11 @@ public class SchoolClassDtoService {
 
         // TODO: Check if this iteration can be removed (might be properly covered by JPA and mappers)
         schoolClassDto.getSubjectOrientations().forEach(subjectOrientationDto -> schoolClass.getSubjectOrientations()
-                .add(subjectOrientationRepository.getOne(subjectOrientationDto.getId())));
+                .add(subjectOrientationDtoService.findEntityById(subjectOrientationDto.getId())));
         schoolClassDto.setSubjectOrientations(null);
 
-        schoolClassMapper.updateEntity(decorator.init(schoolClass, update, yearRepository), schoolClass);
+        Year tmpYear = schoolClassDto.getYear().isIdSet() ? yearDtoService.findEntityById(schoolClassDto.getYear().getId()) : schoolClass.getYear();
+        schoolClassMapper.updateEntity(decorator.init(schoolClass, update, tmpYear), schoolClass);
         return schoolClassMapper.toDto(schoolClassRepository.save(schoolClass));
     }
 

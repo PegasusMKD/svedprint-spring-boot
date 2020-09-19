@@ -33,10 +33,10 @@ public class StudentDtoService {
     private StudentMapper studentMapper;
 
     @Autowired
-    private SchoolClassRepository schoolClassRepository;
+    private SchoolClassDtoService schoolClassDtoService;
 
     @Autowired
-    private SubjectOrientationRepository subjectOrientationRepository;
+    private SubjectOrientationDtoService subjectOrientationDtoService;
 
     @Autowired
     private TeacherDtoService teacherDtoService;
@@ -61,7 +61,7 @@ public class StudentDtoService {
         if (classId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
         } else {
-            student.setSchoolClass(schoolClassRepository.getOne(classId));
+            student.setSchoolClass(schoolClassDtoService.findEntity(classId));
         }
 
         getDecoratorNumber(teacher.getSchoolClass().getStudents(), student, dto); // TODO: Might still be bugged when transferring student from class to class if "number" is the same
@@ -70,7 +70,7 @@ public class StudentDtoService {
         if (subjectOrientationId == null) { // TODO: Rework it so that it searches in the orientations of the class
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
         } else {
-            SubjectOrientation subjectOrientation = subjectOrientationRepository.getOne(subjectOrientationId);
+            SubjectOrientation subjectOrientation = subjectOrientationDtoService.findEntityById(subjectOrientationId);
             if (teacher.getSchoolClass().getSubjectOrientations().contains(subjectOrientation)) {
                 if (!subjectOrientationId.equals(student.getSubjectOrientation().getId())) {
                     // TODO: Add grades handler for changing subjectOrientation (This works only if subjectOrientation update is separate)
@@ -124,7 +124,7 @@ public class StudentDtoService {
         if (classId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
         } else {
-            student.setSchoolClass(schoolClassRepository.getOne(classId));
+            student.setSchoolClass(schoolClassDtoService.findEntity(classId));
         }
 
         String subjectOrientationId = ofNullable(dto.getSubjectOrientation()).map(SubjectOrientationDto::getId)
@@ -132,7 +132,7 @@ public class StudentDtoService {
         if (subjectOrientationId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
         } else {
-            student.setSubjectOrientation(subjectOrientationRepository.getOne(subjectOrientationId));
+            student.setSubjectOrientation(subjectOrientationDtoService.findEntityById(subjectOrientationId));
         }
 
         StudentDtoDecorator decorator = StudentDtoDecorator.builder().build();

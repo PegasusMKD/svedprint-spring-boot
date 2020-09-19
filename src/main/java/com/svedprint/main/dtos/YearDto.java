@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 import java.util.Date;
 import java.util.List;
 
-@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

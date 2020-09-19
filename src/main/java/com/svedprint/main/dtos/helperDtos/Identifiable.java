@@ -6,8 +6,6 @@ import lombok.*;
 @Data
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class Identifiable<T> {

@@ -28,7 +28,10 @@ public class YearDtoService {
     private YearRepository yearRepository;
 
     @Autowired
-    private SchoolRepository schoolRepository;
+    private SchoolDtoService schoolDtoService;
+
+    @Transactional(readOnly = true)
+    public Year findEntityById(String yearId) { return yearRepository.getOne(yearId); }
 
     @Transactional
     public YearDto save(YearDto yearDto, boolean update) {
@@ -55,7 +58,7 @@ public class YearDtoService {
         if (schoolId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED);
         } else {
-            year.setSchool(schoolRepository.getOne(schoolId));
+            year.setSchool(schoolDtoService.findEntityById(schoolId));
             yearDto.setSchool(null);
         }
 

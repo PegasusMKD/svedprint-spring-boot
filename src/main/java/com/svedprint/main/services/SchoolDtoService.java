@@ -21,6 +21,11 @@ public class SchoolDtoService {
     private SchoolMapper schoolMapper;
 
     @Transactional(readOnly = true)
+    public School findEntityById(String schoolId) {
+        return schoolRepository.getOne(schoolId);
+    }
+
+    @Transactional(readOnly = true)
     public SchoolDto findOne(String id) {
         return schoolMapper.toDto(schoolRepository.getOne(id));
     }

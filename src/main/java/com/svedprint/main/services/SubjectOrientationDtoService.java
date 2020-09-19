@@ -35,10 +35,15 @@ public class SubjectOrientationDtoService {
     private TeacherDtoService teacherDtoService;
 
     @Autowired
-    private YearRepository yearRepository;
+    private YearDtoService yearDtoService;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentDtoService studentDtoService;
+
+    @Transactional(readOnly = true)
+    public SubjectOrientation findEntityById(String subjectOrientationId) {
+        return subjectOrientationRepository.getOne(subjectOrientationId);
+    }
 
     @Transactional
     public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
@@ -106,7 +111,7 @@ public class SubjectOrientationDtoService {
         if (yearId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED);
         } else {
-            subjectOrientation.setYear(yearRepository.getOne(yearId));
+            subjectOrientation.setYear(yearDtoService.findEntityById(yearId));
         }
 
         if (subjectOrientation.getId() == null) {

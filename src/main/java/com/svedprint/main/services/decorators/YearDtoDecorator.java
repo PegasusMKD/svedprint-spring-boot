@@ -14,7 +14,7 @@ import static java.util.Optional.ofNullable;
 @Data
 @Getter
 @Setter
-@SuperBuilder
+@Builder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class YearDtoDecorator extends YearDto {

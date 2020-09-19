@@ -14,7 +14,8 @@ import static java.util.Optional.ofNullable;
 @Data
 @Getter
 @Setter
-@SuperBuilder
+@Builder(toBuilder = true)
+@AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
