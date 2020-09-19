@@ -18,7 +18,6 @@ public class TeacherController {
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<TeacherDto> login(@RequestBody TeacherDto teacherDto, @RequestHeader(name = "password") String password) {
         TeacherDto res = teacherDtoService.login(teacherDto, password);
-
         if (res == null) {
             return ResponseEntity.badRequest().build();
         }

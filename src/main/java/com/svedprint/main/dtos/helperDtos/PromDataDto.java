@@ -11,8 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class PromDataDto {
+@EqualsAndHashCode(callSuper = true)
+public class PromDataDto extends Identifiable<String> {
     // TODO: Add data that prom subjects contain
-    public String id;
 }

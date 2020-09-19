@@ -1,6 +1,6 @@
 package com.svedprint.main.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.svedprint.main.dtos.helperDtos.Identifiable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -11,22 +11,15 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class TeacherDto {
-    public String id;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public String username;
-    public String password;
-    public String token;
-    public boolean printAllowed;
-    public SchoolDto school;
-    public SchoolClassDto schoolClass;
-
-    @JsonIgnore
-    public boolean isIdSet() {
-        return id != null;
-    }
-
+@EqualsAndHashCode(callSuper = true)
+public class TeacherDto extends Identifiable<String> {
+    protected String firstName;
+    protected String middleName;
+    protected String lastName;
+    protected String username;
+    protected String password;
+    protected String token;
+    protected boolean printAllowed;
+    protected SchoolDto school;
+    protected SchoolClassDto schoolClass;
 }

@@ -1,6 +1,6 @@
 package com.svedprint.main.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.svedprint.main.dtos.helperDtos.Identifiable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -14,17 +14,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class YearDto {
-    public String id;
-    public Date dateWhenTestimonyConfirmed;
-    public String name; // TODO: Maybe make this (as well as previous years) enum
-    public SchoolDto school;
-    public List<SchoolClassDto> classes;
-    public List<SubjectOrientationDto> subjectOrientations;
-
-    @JsonIgnore
-    public boolean isIdSet() {
-        return id != null;
-    }
+@EqualsAndHashCode(callSuper = true)
+public class YearDto extends Identifiable<String> {
+    protected Date dateWhenTestimonyConfirmed;
+    protected String name; // TODO: Maybe make this (as well as previous years) enum
+    protected SchoolDto school;
+    protected List<SchoolClassDto> classes;
+    protected List<SubjectOrientationDto> subjectOrientations;
 }

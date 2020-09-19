@@ -1,6 +1,6 @@
 package com.svedprint.main.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.svedprint.main.dtos.helperDtos.Identifiable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -13,19 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class SubjectOrientationDto {
-    public String id;
-    public String shortName;
-    public String fullName;
-    public List<String> subjects;
-    public List<String> shortNames;
-    public YearDto year;
-    public SchoolClassDto classes;
-    public List<StudentDto> students;
-
-    @JsonIgnore
-    public boolean isIdSet() {
-        return id != null;
-    }
+@EqualsAndHashCode(callSuper = true)
+public class SubjectOrientationDto extends Identifiable<String> {
+    protected String shortName;
+    protected String fullName;
+    protected List<String> subjects;
+    protected List<String> shortNames;
+    protected YearDto year;
+    protected SchoolClassDto classes;
+    protected List<StudentDto> students;
 }
