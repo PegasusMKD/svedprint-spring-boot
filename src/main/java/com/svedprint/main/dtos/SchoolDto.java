@@ -1,39 +1,32 @@
 package com.svedprint.main.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.svedprint.main.dtos.helperDtos.Identifiable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 import java.util.List;
 
-@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class SchoolDto {
-    public String id;
-    public String name;
-    public String actNumber;
-    public Date actDate;
-    public String directorName;
-    public String businessNumber;
-    public String mainBook;
-    public String ministry;
-    public String country;
-    public String city;
-    public String lastDigitsOfYear;
-    public List<Date> printDatesForDiploma;
-    public List<Date> printDatesForTestimony;
-    public List<YearDto> years;
-    public List<TeacherDto> teachers;
-
-    @JsonIgnore
-    public boolean isIdSet() {
-        return id != null;
-    }
+@EqualsAndHashCode(callSuper = true)
+public class SchoolDto extends Identifiable<String> {
+	protected String name;
+	protected String actNumber;
+	protected Date actDate;
+	protected String directorName;
+	protected String businessNumber;
+	protected String mainBook;
+	protected String ministry;
+	protected String country;
+	protected String city;
+	protected String lastDigitsOfYear;
+	protected List<Date> printDatesForDiploma;
+	protected List<Date> printDatesForTestimony;
+	protected List<YearDto> years;
+	protected List<TeacherDto> teachers;
 }

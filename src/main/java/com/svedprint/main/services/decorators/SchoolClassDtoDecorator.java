@@ -14,23 +14,22 @@ import static java.util.Optional.ofNullable;
 @Data
 @Getter
 @Setter
-@SuperBuilder
+@Builder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class SchoolClassDtoDecorator extends SchoolClassDto {
 
-    public SchoolClassDto init(SchoolClass entity, boolean update, YearRepository yearRepository) {
-        Year tmpYear = year.isIdSet() ? yearRepository.getOne(year.getId()) : entity.getYear();
+	public SchoolClassDto init(SchoolClass entity, boolean update, Year tmpYear) {
 
-        if (update) {
-            name = ofNullable(name).orElse(ofNullable(entity.getName()).orElse(getDefaultName(tmpYear)));
-        } else {
-            name = ofNullable(name).orElse(getDefaultName(tmpYear));
-        }
+		if (update) {
+			name = ofNullable(name).orElse(ofNullable(entity.getName()).orElse(getDefaultName(tmpYear)));
+		} else {
+			name = ofNullable(name).orElse(getDefaultName(tmpYear));
+		}
 
-        entity.setYear(tmpYear);
+		entity.setYear(tmpYear);
 
-        return this;
+		return this;
     }
 
     private String getDefaultName(Year year) {

@@ -13,11 +13,13 @@ import org.springframework.stereotype.Repository;
 
 // , uses = {SubjectOrientationMapper.class, TeacherMapper.class, StudentMapper.class, YearMapper.class}
 @Repository
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {SchoolMapper.class, YearMapper.class, StudentMapper.class})
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {SchoolMapper.class, YearMapper.class, SubjectOrientationMapper.class})
 public interface SchoolClassMapper {
+    @Mapping(target = "students", ignore = true)
     SchoolClass toEntity(SchoolClassDto dto);
 
     @Mapping(target = "teacher", ignore = true)
+    @Mapping(target = "students", ignore = true)
     SchoolClassDto toDto(SchoolClass entity);
 
     void updateEntity(SchoolClassDto dto, @MappingTarget SchoolClass entity);

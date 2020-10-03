@@ -14,21 +14,26 @@ import java.util.ArrayList;
 @Service
 public class SchoolDtoService {
 
-    @Autowired
-    private SchoolRepository schoolRepository;
+	@Autowired
+	private SchoolRepository schoolRepository;
 
-    @Autowired
-    private SchoolMapper schoolMapper;
+	@Autowired
+	private SchoolMapper schoolMapper;
 
-    @Transactional(readOnly = true)
-    public SchoolDto findOne(String id) {
-        return schoolMapper.toDto(schoolRepository.getOne(id));
-    }
+	@Transactional(readOnly = true)
+	public School findEntityById(String schoolId) {
+		return schoolRepository.getOne(schoolId);
+	}
 
-    @Transactional
-    public SchoolDto save(SchoolDto schoolDto, boolean update) {
-        System.out.println(schoolDto);
-        if (schoolDto == null) {
+	@Transactional(readOnly = true)
+	public SchoolDto findOne(String id) {
+		return schoolMapper.toDto(schoolRepository.getOne(id));
+	}
+
+	@Transactional
+	public SchoolDto save(SchoolDto schoolDto, boolean update) {
+		System.out.println(schoolDto);
+		if (schoolDto == null) {
             return null;
         }
         System.out.println("Got through the if...?");

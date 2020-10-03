@@ -43,7 +43,6 @@ public class SubjectOrientationController {
     @DeleteMapping
     public ResponseEntity<Object> delete(@RequestBody SubjectOrientationDto subjectOrientationDto, @RequestHeader String token) {
         boolean res = subjectOrientationDtoService.delete(subjectOrientationDto, token);
-
         if (!res) {
             return ResponseEntity.badRequest().build();
         }

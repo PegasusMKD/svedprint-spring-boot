@@ -4,15 +4,13 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
-@SuperBuilder
+@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class PromDataDto {
-    // TODO: Add data that prom subjects contain
-    public String id;
+@EqualsAndHashCode(callSuper = true)
+public class PromDataDto extends Identifiable<String> {
+	// TODO: Add data that prom subjects contain
 }

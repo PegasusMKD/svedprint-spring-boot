@@ -18,6 +18,7 @@ public abstract class StudentMapper {
     public abstract Student toEntity(StudentDto dto);
 
     @Mapping(target = "schoolClass", ignore = true)
+    @Mapping(target = "maturska", ignore = true)
     public abstract StudentDto toDto(Student entity);
 
     public abstract void updateEntity(StudentDto dto, @MappingTarget Student entity);

@@ -21,24 +21,29 @@ import static java.util.Optional.ofNullable;
 @Service
 public class YearDtoService {
 
-    @Autowired
-    private YearMapper yearMapper;
+	@Autowired
+	private YearMapper yearMapper;
 
-    @Autowired
-    private YearRepository yearRepository;
+	@Autowired
+	private YearRepository yearRepository;
 
-    @Autowired
-    private SchoolRepository schoolRepository;
+	@Autowired
+	private SchoolDtoService schoolDtoService;
 
-    @Transactional
-    public YearDto save(YearDto yearDto, boolean update) {
-        if (yearDto == null) {
-            return null;
-        }
+	@Transactional(readOnly = true)
+	public Year findEntityById(String yearId) {
+		return yearRepository.getOne(yearId);
+	}
 
-        if ((yearDto.isIdSet() && !update) || (!yearDto.isIdSet() && update)) {
-            throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
-        }
+	@Transactional
+	public YearDto save(YearDto yearDto, boolean update) {
+		if (yearDto == null) {
+			return null;
+		}
+
+		if ((yearDto.isIdSet() && !update) || (!yearDto.isIdSet() && update)) {
+			throw new SvedPrintException(SvedPrintExceptionType.UNSUPPORTED_FUNCIONALITY);
+		}
 
         final Year year = yearDto.isIdSet() ? yearRepository.getOne(yearDto.getId()) : new Year();
 
@@ -55,8 +60,8 @@ public class YearDtoService {
         if (schoolId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED);
         } else {
-            year.setSchool(schoolRepository.getOne(schoolId));
-            yearDto.setSchool(null);
+			year.setSchool(schoolDtoService.findEntityById(schoolId));
+			yearDto.setSchool(null);
         }
 
         YearDtoDecorator decorator = YearDtoDecorator.builder().build();

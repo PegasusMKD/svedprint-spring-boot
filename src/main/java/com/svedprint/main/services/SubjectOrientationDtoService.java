@@ -28,26 +28,31 @@ public class SubjectOrientationDtoService {
     @Autowired
     private SubjectOrientationRepository subjectOrientationRepository;
 
-    @Autowired
-    private SubjectOrientationMapper subjectOrientationMapper;
+	@Autowired
+	private SubjectOrientationMapper subjectOrientationMapper;
 
-    @Autowired
-    private TeacherDtoService teacherDtoService;
+	@Autowired
+	private TeacherDtoService teacherDtoService;
 
-    @Autowired
-    private YearRepository yearRepository;
+	@Autowired
+	private YearDtoService yearDtoService;
 
-    @Autowired
-    private StudentRepository studentRepository;
+	@Autowired
+	private StudentDtoService studentDtoService;
 
-    @Transactional
-    public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
-        if (subjectOrientationDto == null) {
-            return null;
-        }
-        if (!update && subjectOrientationDto.getShortName() == null) {
-            throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
-        }
+	@Transactional(readOnly = true)
+	public SubjectOrientation findEntityById(String subjectOrientationId) {
+		return subjectOrientationRepository.getOne(subjectOrientationId);
+	}
+
+	@Transactional
+	public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
+		if (subjectOrientationDto == null) {
+			return null;
+		}
+		if (!update && subjectOrientationDto.getShortName() == null) {
+			throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
+		}
 
         final Teacher teacher = teacherDtoService.findEntityByToken(token);
         List<SubjectOrientation> subjectOrientations = subjectOrientationRepository.findAllByShortNameAndYear(subjectOrientationDto.getShortName(), teacher.getSchoolClass().getYear());
@@ -106,7 +111,7 @@ public class SubjectOrientationDtoService {
         if (yearId == null) {
             throw new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED);
         } else {
-            subjectOrientation.setYear(yearRepository.getOne(yearId));
+			subjectOrientation.setYear(yearDtoService.findEntityById(yearId));
         }
 
         if (subjectOrientation.getId() == null) {

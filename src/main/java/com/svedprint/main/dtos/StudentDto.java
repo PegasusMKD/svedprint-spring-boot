@@ -1,6 +1,6 @@
 package com.svedprint.main.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.svedprint.main.dtos.helperDtos.Identifiable;
 import com.svedprint.main.dtos.helperDtos.PromDataDto;
 import com.svedprint.main.models.enums.*;
 import lombok.*;
@@ -10,16 +10,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class StudentDto {
-    protected String id;
+@EqualsAndHashCode(callSuper = true)
+public class StudentDto extends Identifiable<String> {
     protected Gender gender;
     protected Integer cpyCounter;
     protected String firstName;
@@ -59,9 +57,4 @@ public class StudentDto {
     protected List<Integer> droppedGrades;
     protected SchoolClassDto schoolClass;
     protected SubjectOrientationDto subjectOrientation;
-
-    @JsonIgnore
-    public boolean isIdSet() {
-        return id != null;
-    }
 }
