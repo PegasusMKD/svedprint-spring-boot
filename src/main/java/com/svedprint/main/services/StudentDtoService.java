@@ -9,6 +9,7 @@ import com.svedprint.main.exceptions.SvedPrintException;
 import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.StudentMapper;
 import com.svedprint.main.models.*;
+import com.svedprint.main.models.QStudent;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.repositories.StudentRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
