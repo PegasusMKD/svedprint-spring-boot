@@ -27,7 +27,7 @@ public class StudentController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(name = "/getOne", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<StudentDto> findOne(@RequestBody String id) {
         StudentDto res = studentDtoService.findOne(id);
         if (res == null) {
