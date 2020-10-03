@@ -2,6 +2,8 @@ package com.svedprint.main.services;
 
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.TeacherDto;
+import com.svedprint.main.exceptions.SvedPrintException;
+import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.SchoolClassMapper;
 import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.models.Teacher;
@@ -42,8 +44,9 @@ public class SchoolClassDtoService {
 
     @Transactional(readOnly = true)
     public SchoolClass findEntity(String id) {
-        return schoolClassRepository.getOne(id);
-    }
+		return schoolClassRepository.findById(id).orElseThrow(() ->
+				new SvedPrintException(SvedPrintExceptionType.MISSING_CLASS_NAME));
+	}
 
     @Transactional
     public SchoolClassDto save(SchoolClassDto schoolClassDto, boolean update) {

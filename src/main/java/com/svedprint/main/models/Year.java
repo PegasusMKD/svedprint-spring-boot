@@ -36,9 +36,9 @@ public class Year {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SchoolClass> classes;
 
-    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubjectOrientation> subjectOrientations;
 }
