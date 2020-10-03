@@ -56,6 +56,12 @@ public class StudentDtoService {
                 .stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public StudentDto findOne(String id) {
+        return studentRepository.findById(id).map(studentMapper::toDto).orElseThrow(() ->
+                new SvedPrintException(SvedPrintExceptionType.MISSING_STUDENT));
+    }
+
     @Transactional
     public StudentDto save(StudentDto dto, String token, boolean update) {
         if (dto == null) {

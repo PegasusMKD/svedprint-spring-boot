@@ -27,6 +27,15 @@ public class StudentController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudentDto> findOne(@RequestBody String id) {
+        StudentDto res = studentDtoService.findOne(id);
+        if (res == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping(value = "/page", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResponse<StudentDto>> findAll(@RequestBody StudentDto dto) {
         PageResponse<StudentDto> res = studentDtoService.findAll(dto);
