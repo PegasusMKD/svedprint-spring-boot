@@ -1,6 +1,7 @@
 package com.svedprint.main.controllers;
 
 import com.svedprint.main.dtos.StudentDto;
+import com.svedprint.main.dtos.meta.PageResponse;
 import com.svedprint.main.services.StudentDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,15 @@ public class StudentController {
     @GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StudentDto>> getAllStudents(@RequestHeader String token) {
         List<StudentDto> res = studentDtoService.getAllStudents(token);
+        if (res == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping(value = "/page", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResponse<StudentDto>> findAll(StudentDto dto) {
+        PageResponse<StudentDto> res = studentDtoService.findAll(dto);
         if (res == null) {
             return ResponseEntity.badRequest().build();
         }

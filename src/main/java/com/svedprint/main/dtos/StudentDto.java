@@ -19,46 +19,46 @@ import java.util.Map;
 @ToString
 @EqualsAndHashCode
 public class StudentDto {
-    public String id;
-    public Gender gender;
-    public Integer cpyCounter;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public Integer number;
-    public String fathersName;
-    public String mothersName;
-    public Date dateOfBirth;
-    public String placeOfResidence;
-    public String placeOfBirth;
-    public String timesStudiedYear;
-    public String timesTakenExam;
-    public String examMonth;
-    public PassedExam passedExam;
-    public PassedYear passedYear;
-    public Integer justifiedAbsences;
-    public Integer unjustifiedAbsences;
-    public ExamType examType;
-    public EducationType educationType;
-    public StudentType studentType;
-    public BehaviorType behaviorType;
-    public String lastGradeYear; // TODO: Maybe make this an enum aswell
-    public SuccessType lastSchoolYearSuccessType;
-    public Integer lastSchoolYear;
-    public String lastSchoolName;
-    public String lastBusinessNumber; // Деловоден број
-    public Date dateWhenTestimonyWasPrinted; // Testimony - Свидетелство
-    public String citizenship;
-    public String nameOfSchool; // Not sure if needed...? Since the name can be taken from the main object (might be a field that was added for some database fixing purposes)
-    public boolean printedTestimony;
-    public String optionalSubjects; // TODO: Maybe this should be reworked, not sure what the field is currently used for, maybe it could be a list of integers
-    public Integer diplomaBusinessNumber;
-    public List<String> languages; // TODO: Maybe this should be reworked so that it doesn't send languages as 0:1
-    public Map<String, PromDataDto> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
-    public List<Integer> grades;
-    public List<Integer> droppedGrades;
-    public SchoolClassDto schoolClass;
-    public SubjectOrientationDto subjectOrientation;
+    protected String id;
+    protected Gender gender;
+    protected Integer cpyCounter;
+    protected String firstName;
+    protected String middleName;
+    protected String lastName;
+    protected Integer number;
+    protected String fathersName;
+    protected String mothersName;
+    protected Date dateOfBirth;
+    protected String placeOfResidence;
+    protected String placeOfBirth;
+    protected String timesStudiedYear;
+    protected String timesTakenExam;
+    protected String examMonth;
+    protected PassedExam passedExam;
+    protected PassedYear passedYear;
+    protected Integer justifiedAbsences;
+    protected Integer unjustifiedAbsences;
+    protected ExamType examType;
+    protected EducationType educationType;
+    protected StudentType studentType;
+    protected BehaviorType behaviorType;
+    protected String lastGradeYear; // TODO: Maybe make this an enum aswell
+    protected SuccessType lastSchoolYearSuccessType;
+    protected Integer lastSchoolYear;
+    protected String lastSchoolName;
+    protected String lastBusinessNumber; // Деловоден број
+    protected Date dateWhenTestimonyWasPrinted; // Testimony - Свидетелство
+    protected String citizenship;
+    protected String nameOfSchool; // Not sure if needed...? Since the name can be taken from the main object (might be a field that was added for some database fixing purposes)
+    protected boolean printedTestimony;
+    protected String optionalSubjects; // TODO: Maybe this should be reworked, not sure what the field is currently used for, maybe it could be a list of integers
+    protected Integer diplomaBusinessNumber;
+    protected List<String> languages; // TODO: Maybe this should be reworked so that it doesn't send languages as 0:1
+    protected Map<String, PromDataDto> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
+    protected List<Integer> grades;
+    protected List<Integer> droppedGrades;
+    protected SchoolClassDto schoolClass;
+    protected SubjectOrientationDto subjectOrientation;
 
     @JsonIgnore
     public boolean isIdSet() {

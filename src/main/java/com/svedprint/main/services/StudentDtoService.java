@@ -1,20 +1,23 @@
 package com.svedprint.main.services;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.StudentDto;
 import com.svedprint.main.dtos.SubjectOrientationDto;
+import com.svedprint.main.dtos.meta.PageResponse;
 import com.svedprint.main.exceptions.SvedPrintException;
 import com.svedprint.main.exceptions.SvedPrintExceptionType;
 import com.svedprint.main.mappers.StudentMapper;
-import com.svedprint.main.models.SchoolClass;
-import com.svedprint.main.models.Student;
-import com.svedprint.main.models.SubjectOrientation;
-import com.svedprint.main.models.Teacher;
+import com.svedprint.main.models.*;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.repositories.StudentRepository;
 import com.svedprint.main.repositories.SubjectOrientationRepository;
 import com.svedprint.main.services.decorators.StudentDtoDecorator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.svedprint.main.services.helpers.OptionalBooleanBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,26 +29,31 @@ import static java.util.Optional.ofNullable;
 
 @Service
 public class StudentDtoService {
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
+    private final SchoolClassRepository schoolClassRepository;
+    private final SubjectOrientationRepository subjectOrientationRepository;
+    private final TeacherDtoService teacherDtoService;
 
-    @Autowired
-    private StudentMapper studentMapper;
+    public StudentDtoService(StudentRepository studentRepository,
+                             StudentMapper studentMapper,
+                             SchoolClassRepository schoolClassRepository,
+                             SubjectOrientationRepository subjectOrientationRepository,
+                             TeacherDtoService teacherDtoService) {
 
-    @Autowired
-    private SchoolClassRepository schoolClassRepository;
+        this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
+        this.schoolClassRepository = schoolClassRepository;
+        this.subjectOrientationRepository = subjectOrientationRepository;
+        this.teacherDtoService = teacherDtoService;
 
-    @Autowired
-    private SubjectOrientationRepository subjectOrientationRepository;
-
-    @Autowired
-    private TeacherDtoService teacherDtoService;
+    }
 
 
     @Transactional(readOnly = true)
     public List<StudentDto> getAllStudents(String token) {
         return teacherDtoService.findEntityByToken(token).getSchoolClass().getStudents()
-                .stream().map(student -> studentMapper.toDto(student)).collect(Collectors.toList());
+                .stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -182,5 +190,26 @@ public class StudentDtoService {
             }
             studentRepository.saveAll(iterableStudents);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<StudentDto> findAll(StudentDto dto) {
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "number");
+        Page<Student> page = dto != null ?
+                studentRepository.findAll(makeFilter(dto), pageable) : Page.empty(pageable);
+
+        List<StudentDto> content = page.getContent().stream()
+                .map(studentMapper::toDtoInitial).collect(Collectors.toList());
+
+        return new PageResponse<>(page.getTotalPages(), page.getTotalElements(), content);
+    }
+
+    private BooleanExpression makeFilter(StudentDto dto) {
+        QStudent qStudent = QStudent.student;
+        OptionalBooleanBuilder opBuilder = OptionalBooleanBuilder.builder(qStudent.isNotNull());
+        if (dto == null) {
+            return opBuilder.build();
+        }
+        return opBuilder.notEmptyAnd(qStudent.schoolClass.id::eq, dto.getSchoolClass().getId()).build();
     }
 }
