@@ -4,12 +4,12 @@ import com.svedprint.main.dtos.*;
 import com.svedprint.main.services.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,37 +17,33 @@ import java.util.List;
 public class GlobalService {
 
 
-    @Autowired
-    private TeacherDtoService teacherDtoService;
+    private final TeacherDtoService teacherDtoService;
+    private final SchoolDtoService schoolDtoService;
+    private final SchoolClassDtoService schoolClassDtoService;
+    private final StudentDtoService studentDtoService;
+    private final SubjectOrientationDtoService subjectOrientationDtoService;
+    private final YearDtoService yearDtoService;
 
-    @Autowired
-    private SchoolDtoService schoolDtoService;
-
-    @Autowired
-    private SchoolClassDtoService schoolClassDtoService;
-
-    @Autowired
-    private StudentDtoService studentDtoService;
-
-    @Autowired
-    private SubjectOrientationDtoService subjectOrientationDtoService;
-
-    @Autowired
-    private YearDtoService yearDtoService;
+    public GlobalService(TeacherDtoService teacherDtoService, SchoolDtoService schoolDtoService,
+                         SchoolClassDtoService schoolClassDtoService, StudentDtoService studentDtoService,
+                         SubjectOrientationDtoService subjectOrientationDtoService, YearDtoService yearDtoService) {
+        this.teacherDtoService = teacherDtoService;
+        this.schoolDtoService = schoolDtoService;
+        this.schoolClassDtoService = schoolClassDtoService;
+        this.studentDtoService = studentDtoService;
+        this.subjectOrientationDtoService = subjectOrientationDtoService;
+        this.yearDtoService = yearDtoService;
+    }
 
 
     public void initDB() throws IOException {
-        List<String> yearNames = new ArrayList<String>() {{
-            add("I");
-            add("II");
-            add("III");
-        }};
+        List<String> yearNames = Arrays.asList("I", "II", "III");
 
         SchoolDto schoolDto = new SchoolDto();
         schoolDto.setName("Korcagin");
         schoolDto.setDirectorName("Filip Jovanov");
         System.out.println(schoolDto);
-        SchoolDto school = schoolDtoService.save(schoolDto, false);
+        SchoolDto school = schoolDtoService.save(schoolDto);
 
 
         List<YearDto> years = new ArrayList<>();
@@ -55,7 +51,7 @@ public class GlobalService {
             YearDto yearDto = new YearDto();
             yearDto.setName(yearName);
             yearDto.setSchool(school);
-            years.add(yearDtoService.save(yearDto, false));
+            years.add(yearDtoService.save(yearDto));
         }
 
         List<SubjectOrientationDto> mandatory = createMandatoryBase();
@@ -66,7 +62,7 @@ public class GlobalService {
             for (SubjectOrientationDto subjectOrientationDto : mandatory) {
                 subjectOrientationDto.setYear(yearDto);
                 subjectOrientationDto.setClasses(null);
-                subjectOrientations.add(subjectOrientationDtoService.oldSave(subjectOrientationDto, false));
+                subjectOrientations.add(subjectOrientationDtoService.oldSave(subjectOrientationDto));
             }
             subjectOrientationsMap.put(yearDto, subjectOrientations);
         }
@@ -80,7 +76,7 @@ public class GlobalService {
                 schoolClassDto.setName(yearDto.getName() + "-" + i);
                 schoolClassDto.setYear(yearDto);
                 schoolClassDto.setSubjectOrientations(subjectOrientationsMap.get(yearDto));
-                schoolClassDto = schoolClassDtoService.save(schoolClassDto, false);
+                schoolClassDto = schoolClassDtoService.save(schoolClassDto);
                 classes.add(schoolClassDto);
                 TeacherDto teacherDto = new TeacherDto();
                 teacherDto.setSchoolClass(schoolClassDto);
