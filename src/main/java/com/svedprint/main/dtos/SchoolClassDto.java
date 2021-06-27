@@ -9,8 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class SchoolClassDto extends Identifiable<String> {

@@ -21,31 +21,20 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class SchoolDtoDecorator extends SchoolDto {
 
-    public SchoolDto init(School entity, boolean update) {
+	public SchoolDto init(School entity) {
 
-        actNumber = ofNullable(actNumber).orElse(ofNullable(entity.getActNumber()).orElse("12345/1"));
-        actDate = ofNullable(actDate).orElse(ofNullable(entity.getActDate()).orElse(new GregorianCalendar(2004, Calendar.FEBRUARY, 11).getTime()));
-        businessNumber = ofNullable(businessNumber).orElse(ofNullable(entity.getBusinessNumber()).orElse("128/4"));
-        mainBook = ofNullable(mainBook).orElse(ofNullable(entity.getMainBook()).orElse("128/4"));
-        ministry = ofNullable(ministry).orElse(ofNullable(entity.getMinistry()).orElse("Министерство за образование и наука"));
-        country = ofNullable(country).orElse(ofNullable(entity.getCountry()).orElse("Република Северна Македонија"));
-        city = ofNullable(city).orElse(ofNullable(entity.getCity()).orElse("Скопје"));
-        lastDigitsOfYear = ofNullable(lastDigitsOfYear).orElse(ofNullable(entity.getLastDigitsOfYear()).orElse(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) % 100)));
-        printDatesForDiploma = ofNullable(printDatesForDiploma).orElse(ofNullable(entity.getPrintDatesForDiploma()).orElse(new ArrayList<>()));
-        printDatesForTestimony = ofNullable(printDatesForTestimony).orElse(ofNullable(entity.getPrintDatesForTestimony()).orElse(new ArrayList<>()));
-
-
-        if (update) {
-            // So that even if these values get sent for an update/create, they won't happen
-            years = null;
-            teachers = null;
-            name = ofNullable(name).orElse(ofNullable(entity.getName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED)));
-            directorName = ofNullable(directorName).orElse(ofNullable(entity.getDirectorName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.DIRECTOR_NAME_MISSING)));
-        } else {
-            name = ofNullable(name).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED));
-            directorName = ofNullable(directorName).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.DIRECTOR_NAME_MISSING));
-        }
-
-        return this;
-    }
+		actNumber = ofNullable(actNumber).orElse(ofNullable(entity.getActNumber()).orElse("12345/1"));
+		actDate = ofNullable(actDate).orElse(ofNullable(entity.getActDate()).orElse(new GregorianCalendar(2004, Calendar.FEBRUARY, 11).getTime()));
+		businessNumber = ofNullable(businessNumber).orElse(ofNullable(entity.getBusinessNumber()).orElse("128/4"));
+		mainBook = ofNullable(mainBook).orElse(ofNullable(entity.getMainBook()).orElse("128/4"));
+		ministry = ofNullable(ministry).orElse(ofNullable(entity.getMinistry()).orElse("Министерство за образование и наука"));
+		country = ofNullable(country).orElse(ofNullable(entity.getCountry()).orElse("Република Северна Македонија"));
+		city = ofNullable(city).orElse(ofNullable(entity.getCity()).orElse("Скопје"));
+		lastDigitsOfYear = ofNullable(lastDigitsOfYear).orElse(ofNullable(entity.getLastDigitsOfYear()).orElse(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) % 100)));
+		printDatesForDiploma = ofNullable(printDatesForDiploma).orElse(ofNullable(entity.getPrintDatesForDiploma()).orElse(new ArrayList<>()));
+		printDatesForTestimony = ofNullable(printDatesForTestimony).orElse(ofNullable(entity.getPrintDatesForTestimony()).orElse(new ArrayList<>()));
+		name = ofNullable(name).orElseGet(() -> ofNullable(entity.getName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_SCHOOL_ASSIGNED)));
+		directorName = ofNullable(directorName).orElseGet(() -> ofNullable(entity.getDirectorName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.DIRECTOR_NAME_MISSING)));
+		return this;
+	}
 }

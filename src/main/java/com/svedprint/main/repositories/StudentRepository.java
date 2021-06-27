@@ -8,5 +8,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, String>, QuerydslPredicateExecutor<Student> {
-    List<Student> findAllBySchoolClassOrderByNumberAsc(SchoolClass schoolClass);
+
 }

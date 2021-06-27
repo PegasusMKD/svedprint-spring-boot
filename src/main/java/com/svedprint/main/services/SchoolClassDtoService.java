@@ -9,10 +9,7 @@ import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.models.Teacher;
 import com.svedprint.main.models.Year;
 import com.svedprint.main.repositories.SchoolClassRepository;
-import com.svedprint.main.repositories.SubjectOrientationRepository;
-import com.svedprint.main.repositories.YearRepository;
 import com.svedprint.main.services.decorators.SchoolClassDtoDecorator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,57 +20,45 @@ import static java.util.Optional.ofNullable;
 @Service
 public class SchoolClassDtoService {
 
-    @Autowired
-    private SchoolClassRepository schoolClassRepository;
+	private final SchoolClassRepository schoolClassRepository;
+	private final SchoolClassMapper schoolClassMapper;
 
-	@Autowired
-	private YearDtoService yearDtoService;
+	private final YearDtoService yearDtoService;
+	private final SubjectOrientationDtoService subjectOrientationDtoService;
+	private final TeacherDtoService teacherDtoService;
 
-    @Autowired
-    private SchoolClassMapper schoolClassMapper;
+	public SchoolClassDtoService(SchoolClassRepository schoolClassRepository, SchoolClassMapper schoolClassMapper,
+								 YearDtoService yearDtoService, SubjectOrientationDtoService subjectOrientationDtoService,
+								 TeacherDtoService teacherDtoService) {
+		this.schoolClassRepository = schoolClassRepository;
+		this.schoolClassMapper = schoolClassMapper;
+		this.yearDtoService = yearDtoService;
+		this.subjectOrientationDtoService = subjectOrientationDtoService;
+		this.teacherDtoService = teacherDtoService;
+	}
 
-    @Autowired
-    private SubjectOrientationDtoService subjectOrientationDtoService;
+	public SchoolClassDto findOne(String id) {
+		return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
+	}
 
-    @Autowired
-    private TeacherDtoService teacherDtoService;
-
-    public SchoolClassDto findOne(String id) {
-        return schoolClassMapper.toDto(schoolClassRepository.getOne(id));
-    }
-
-    @Transactional(readOnly = true)
-    public SchoolClass findEntity(String id) {
+	@Transactional(readOnly = true)
+	public SchoolClass findEntity(String id) {
 		return schoolClassRepository.findById(id).orElseThrow(() ->
 				new SvedPrintException(SvedPrintExceptionType.MISSING_CLASS_NAME));
 	}
 
-    @Transactional
-    public SchoolClassDto save(SchoolClassDto schoolClassDto, boolean update) {
-
-        // TODO: Differentiate the operations between Admin and Teacher
-
-        if (schoolClassDto == null) {
-            return null;
-        }
-
-        final SchoolClass schoolClass = schoolClassDto.isIdSet() ? schoolClassRepository.getOne(schoolClassDto.getId()) : new SchoolClass();
-
-        String teacherId = ofNullable(schoolClassDto.getTeacher()).map(TeacherDto::getId)
-                .orElse(ofNullable(schoolClassDto.getTeacher()).map(TeacherDto::getToken)
-                        .orElse(null));
-
-        if (teacherId != null) {
-            schoolClassDto.setTeacher(teacherDtoService.findOne(teacherId, teacherId));
-        }
-
-        if (schoolClass.getId() == null) {
-            schoolClass.setStudents(new ArrayList<>());
-            schoolClass.setSubjectOrientations(new ArrayList<>());
-        } else {
-            // If any updates should happen on the students, it should be from the students service, not from the SchoolClass services
-            schoolClassDto.setStudents(null);
+	@Transactional
+	public SchoolClassDto save(SchoolClassDto schoolClassDto) {
+		// TODO: Differentiate the operations between Admin and Teacher
+		if (schoolClassDto == null) {
+			return null;
 		}
+
+		final SchoolClass schoolClass = schoolClassDto.isIdSet() ? schoolClassRepository.getOne(schoolClassDto.getId()) : new SchoolClass();
+
+		// TODO: May be removable
+		ofNullable(schoolClassDto.getTeacher()).map(TeacherDto::getId)
+				.ifPresent(teacherId -> schoolClassDto.setTeacher(teacherDtoService.findOne(teacherId)));
 
 		SchoolClassDtoDecorator decorator = SchoolClassDtoDecorator.builder().build();
 		schoolClassMapper.decorate(schoolClassDto, decorator);
@@ -84,15 +69,15 @@ public class SchoolClassDtoService {
 		schoolClassDto.setSubjectOrientations(null);
 
 		Year tmpYear = schoolClassDto.getYear().isIdSet() ? yearDtoService.findEntityById(schoolClassDto.getYear().getId()) : schoolClass.getYear();
-		schoolClassMapper.updateEntity(decorator.init(schoolClass, update, tmpYear), schoolClass);
+		schoolClassMapper.updateEntity(decorator.init(schoolClass, tmpYear), schoolClass);
 		return schoolClassMapper.toDto(schoolClassRepository.save(schoolClass));
 	}
 
-    @Transactional(readOnly = true)
-    public SchoolClassDto getSchoolClassByUser(TeacherDto teacherDto) {
-        Teacher teacher = teacherDtoService.findEntityByToken(teacherDto.getToken());
-        return schoolClassMapper.toDto(teacher.getSchoolClass());
-    }
+	@Transactional(readOnly = true)
+	public SchoolClassDto getSchoolClassByUser(TeacherDto teacherDto) {
+		Teacher teacher = teacherDtoService.findEntityByToken(teacherDto.getToken());
+		return schoolClassMapper.toDto(teacher.getSchoolClass());
+	}
 
 
 }

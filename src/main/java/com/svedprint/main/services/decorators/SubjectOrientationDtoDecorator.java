@@ -4,10 +4,10 @@ import com.svedprint.main.dtos.SubjectOrientationDto;
 import com.svedprint.main.models.Student;
 import com.svedprint.main.models.SubjectOrientation;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static java.util.Optional.ofNullable;
 
@@ -20,61 +20,54 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class SubjectOrientationDtoDecorator extends SubjectOrientationDto {
 
-    private static <T> List<T> ofNullableList(List<T> elements, List<T> entityValues) {
-        if (elements != null && elements.isEmpty()) {
-            if (entityValues != null && entityValues.isEmpty()) {
-                return new ArrayList<>();
-            } else {
-                return entityValues;
-            }
-        }
-        return elements;
-    }
+	private static <T> List<T> ofNullableList(List<T> elements, List<T> entityValues) {
+		if (elements != null && elements.isEmpty()) {
+			return entityValues;
+		}
+		return elements;
+	}
 
-    private static void handleStudents(List<String> subjects, SubjectOrientation entity, boolean add) {
+	private static void handleStudents(List<String> subjects, SubjectOrientation entity, boolean add) {
 
-        List<String> entitySubjects = entity.getSubjects();
-        if (add) {
-            for (Student student : entity.getStudents()) {
-                List<Integer> grades = student.getGrades();
-                for (int i = 0; i < subjects.size() - entitySubjects.size(); i++) {
-                    grades.add(0);
-                }
-                student.setGrades(grades);
-            }
-        } else {
-            int idx = 0;
-            int maxDifference = entitySubjects.size() - subjects.size();
-            List<Student> students = entity.getStudents();
-            List<Integer> grades;
+		List<String> entitySubjects = entity.getSubjects();
+		List<Student> students = entity.getStudents();
+		int differentSubjects = Math.abs(entitySubjects.size() - subjects.size());
 
-            for (String subject : entitySubjects) {
-                if (idx == maxDifference) {
-                    break;
-                }
+		if (add) addSubjectsToStudents(students, differentSubjects);
+		else removeSubjectsFromStudents(subjects, entitySubjects, students, differentSubjects);
+	}
 
-                if (!subjects.contains(subject)) {
-                    idx++;
-                    int idxSubject = entitySubjects.indexOf(subject);
-                    for (Student student : students) {
-                        grades = student.getGrades();
-                        grades.remove(idxSubject);
-                        student.setGrades(grades);
-                    }
-                }
-            }
-        }
-    }
+	private static void removeSubjectsFromStudents(List<String> subjects, List<String> entitySubjects, List<Student> students, int differentSubjects) {
+		for (String subject : entitySubjects) {
+			if (differentSubjects == 0) {
+				break;
+			}
 
-    public SubjectOrientationDto init(SubjectOrientation entity, boolean update) {
-        shortName = ofNullable(shortName).orElse(ofNullable(entity.getShortName()).orElse("Име"));
-        fullName = ofNullable(fullName).orElse(ofNullable(fullName).orElse("Целосно име"));
-        shortNames = ofNullable(shortNames).orElse(ofNullable(shortNames).orElse(new ArrayList<>()));
-        subjects = ofNullableList(subjects, entity.getSubjects());
-        if (subjects != null && subjects.size() != entity.getSubjects().size()) {
-            handleStudents(subjects, entity, subjects.size() > entity.getSubjects().size());
-        }
-        return this;
-    }
+			if (!subjects.contains(subject)) {
+				differentSubjects--;
+				int idx = entitySubjects.indexOf(subject);
+				students.forEach(student -> student.getGrades().remove(idx));
+			}
+		}
+	}
+
+	private static void addSubjectsToStudents(List<Student> students, int differentSubjects) {
+		students.forEach(student -> {
+			List<Integer> grades = student.getGrades();
+			IntStream.range(0, differentSubjects).mapToObj(i -> 0).forEachOrdered(grades::add);
+			student.setGrades(grades);
+		});
+	}
+
+	public SubjectOrientationDto init(SubjectOrientation entity) {
+		shortName = ofNullable(shortName).orElse(ofNullable(entity.getShortName()).orElse("Име"));
+		fullName = ofNullable(fullName).orElse(ofNullable(fullName).orElse("Целосно име"));
+		shortNames = ofNullable(shortNames).orElse(ofNullable(shortNames).orElse(new ArrayList<>()));
+		subjects = ofNullableList(subjects, entity.getSubjects());
+		if (subjects != null && subjects.size() != entity.getSubjects().size()) {
+			handleStudents(subjects, entity, subjects.size() > entity.getSubjects().size());
+		}
+		return this;
+	}
 
 }

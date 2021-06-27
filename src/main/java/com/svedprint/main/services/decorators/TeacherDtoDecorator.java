@@ -18,22 +18,19 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class TeacherDtoDecorator extends TeacherDto {
 
-    public TeacherDto init(Teacher entity, boolean update, Argon2 argon2) {
-        firstName = ofNullable(firstName).orElse(ofNullable(entity.getFirstName()).orElse("Име"));
-        middleName = ofNullable(middleName).orElse(ofNullable(entity.getMiddleName()).orElse(""));
-        lastName = ofNullable(lastName).orElse(ofNullable(entity.getLastName()).orElse("Презиме"));
+	public TeacherDto init(Teacher entity, Argon2 argon2) {
+		firstName = ofNullable(firstName).orElse(ofNullable(entity.getFirstName()).orElse("Име"));
+		middleName = ofNullable(middleName).orElse(ofNullable(entity.getMiddleName()).orElse(""));
+		lastName = ofNullable(lastName).orElse(ofNullable(entity.getLastName()).orElse("Презиме"));
+		username = ofNullable(username).orElseGet(() -> ofNullable(entity.getUsername())
+				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_USERNAME_PROVIDED)));
 
-        if (password != null && !password.isEmpty()) {
-            password = argon2.hash(4, 5000, 2, password);
-        }
+		// TODO: Remove from decorator, put inside service as a method
+		if (password != null && !password.isEmpty()) {
+			password = argon2.hash(4, 5000, 2, password);
+		}
 
-        if (update) {
-            username = ofNullable(username).orElse(ofNullable(entity.getUsername()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_USERNAME_PROVIDED)));
-        } else {
-            username = ofNullable(username).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_USERNAME_PROVIDED));
-        }
-
-        return this;
-    }
+		return this;
+	}
 
 }

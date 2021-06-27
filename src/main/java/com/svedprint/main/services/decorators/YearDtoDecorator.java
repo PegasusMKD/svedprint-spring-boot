@@ -18,16 +18,9 @@ import static java.util.Optional.ofNullable;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class YearDtoDecorator extends YearDto {
-    public YearDto init(Year entity, boolean update) {
-
-        if (update) {
-            name = ofNullable(name).orElse(ofNullable(entity.getName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED)));
-        } else {
-            name = ofNullable(name).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED));
-        }
-
-        dateWhenTestimonyConfirmed = ofNullable(dateWhenTestimonyConfirmed).orElse(ofNullable(dateWhenTestimonyConfirmed).orElse(new Date()));
-
-        return this;
-    }
+	public YearDto init(Year entity) {
+		name = ofNullable(name).orElseGet(() -> ofNullable(entity.getName()).orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.NO_YEAR_PROVIDED)));
+		dateWhenTestimonyConfirmed = ofNullable(dateWhenTestimonyConfirmed).orElse(ofNullable(dateWhenTestimonyConfirmed).orElse(new Date()));
+		return this;
+	}
 }

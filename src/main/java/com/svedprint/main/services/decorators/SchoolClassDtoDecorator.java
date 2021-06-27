@@ -19,25 +19,15 @@ import static java.util.Optional.ofNullable;
 @EqualsAndHashCode(callSuper = true)
 public class SchoolClassDtoDecorator extends SchoolClassDto {
 
-	public SchoolClassDto init(SchoolClass entity, boolean update, Year tmpYear) {
-
-		if (update) {
-			name = ofNullable(name).orElse(ofNullable(entity.getName()).orElse(getDefaultName(tmpYear)));
-		} else {
-			name = ofNullable(name).orElse(getDefaultName(tmpYear));
-		}
-
+	public SchoolClassDto init(SchoolClass entity, Year tmpYear) {
+		name = ofNullable(name).orElseGet(() -> ofNullable(entity.getName()).orElse(getDefaultName(tmpYear)));
 		entity.setYear(tmpYear);
-
 		return this;
-    }
+	}
 
-    private String getDefaultName(Year year) {
-        if (year != null) {
-            return year.getName() + "-" + year.getClasses().size() + 1;
-        } else {
-            throw new SvedPrintException(SvedPrintExceptionType.MISSING_CLASS_NAME);
-        }
-    }
+	private String getDefaultName(Year year) {
+		if (year != null) return year.getName() + "-" + year.getClasses().size() + 1;
+		throw new SvedPrintException(SvedPrintExceptionType.MISSING_CLASS_NAME);
+	}
 
 }

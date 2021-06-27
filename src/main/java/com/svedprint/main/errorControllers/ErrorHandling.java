@@ -11,10 +11,7 @@ public class ErrorHandling {
 
     @ExceptionHandler({SvedPrintException.class})
     public ResponseEntity<ErrorResponse> handleConstraintViolation(Exception ex) {
-        ErrorResponse error = new ErrorResponse();
-        error.setMessage(ex.getLocalizedMessage());
-        error.setErrorCode("SvedPrintException");
-        error.setData(ex.getCause());
+        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), "SvedPrintException", ex.getCause());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

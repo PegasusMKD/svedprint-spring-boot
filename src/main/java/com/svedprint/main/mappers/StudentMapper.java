@@ -9,28 +9,26 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Repository;
 
-// TODO: Specify other mappers needed when implementing this mapper (as u write the code)
-
-// , uses = {SchoolClassMapper.class, SubjectOrientationMapper.class}
 @Repository
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {SchoolMapper.class, YearMapper.class, SubjectOrientationMapper.class})
-public abstract class StudentMapper {
-    public abstract Student toEntity(StudentDto dto);
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+		uses = {SchoolMapper.class, YearMapper.class, SchoolClassMapper.class, SubjectOrientationMapper.class})
+public interface StudentMapper {
+	Student toEntity(StudentDto dto);
 
-    @Mapping(target = "schoolClass", ignore = true)
-    @Mapping(target = "maturska", ignore = true)
-    public abstract StudentDto toDto(Student entity);
+	@Mapping(target = "schoolClass", ignore = true)
+	@Mapping(target = "maturska", ignore = true)
+	StudentDto toDto(Student entity);
 
-    public abstract void updateEntity(StudentDto dto, @MappingTarget Student entity);
+	void updateEntity(StudentDto dto, @MappingTarget Student entity);
 
-    public abstract void decorate(StudentDto dto, @MappingTarget StudentDtoDecorator decorator);
+	void decorate(StudentDto dto, @MappingTarget StudentDtoDecorator decorator);
 
-    public StudentDto toDtoInitial(Student entity) {
-        StudentDto studentDto = new StudentDto();
-        studentDto.setId(entity.getId());
-        studentDto.setFirstName(entity.getFirstName());
-        studentDto.setLastName(entity.getLastName());
-        studentDto.setNumber(entity.getNumber());
-        return studentDto;
-    }
+	default StudentDto toDtoInitial(Student entity) {
+		StudentDto studentDto = new StudentDto();
+		studentDto.setId(entity.getId());
+		studentDto.setFirstName(entity.getFirstName());
+		studentDto.setLastName(entity.getLastName());
+		studentDto.setNumber(entity.getNumber());
+		return studentDto;
+	}
 }

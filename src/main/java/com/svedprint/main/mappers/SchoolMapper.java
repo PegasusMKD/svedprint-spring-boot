@@ -9,11 +9,9 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Repository;
 
-// TODO: Specify other mappers needed when implementing this mapper (as u write the code)
-
-// , uses = {YearMapper.class, TeacherMapper.class}
 @Repository
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = {YearMapper.class, TeacherMapper.class})
 public interface SchoolMapper {
     School toEntity(SchoolDto dto);
 

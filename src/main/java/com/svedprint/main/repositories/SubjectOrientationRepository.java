@@ -11,6 +11,4 @@ public interface SubjectOrientationRepository extends JpaRepository<SubjectOrien
     List<SubjectOrientation> findAllByShortNameAndYear(String shortName, Year year);
 
     SubjectOrientation findByShortNameAndClasses(String shortName, SchoolClass schoolClass);
-
-    List<SubjectOrientation> findAllByClasses(SchoolClass classes);
 }

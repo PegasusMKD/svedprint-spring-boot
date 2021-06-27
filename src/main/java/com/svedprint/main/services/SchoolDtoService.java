@@ -5,7 +5,6 @@ import com.svedprint.main.mappers.SchoolMapper;
 import com.svedprint.main.models.School;
 import com.svedprint.main.repositories.SchoolRepository;
 import com.svedprint.main.services.decorators.SchoolDtoDecorator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +13,13 @@ import java.util.ArrayList;
 @Service
 public class SchoolDtoService {
 
-	@Autowired
-	private SchoolRepository schoolRepository;
+	private final SchoolRepository schoolRepository;
+	private final SchoolMapper schoolMapper;
 
-	@Autowired
-	private SchoolMapper schoolMapper;
+	public SchoolDtoService(SchoolRepository schoolRepository, SchoolMapper schoolMapper) {
+		this.schoolRepository = schoolRepository;
+		this.schoolMapper = schoolMapper;
+	}
 
 	@Transactional(readOnly = true)
 	public School findEntityById(String schoolId) {
@@ -31,22 +32,14 @@ public class SchoolDtoService {
 	}
 
 	@Transactional
-	public SchoolDto save(SchoolDto schoolDto, boolean update) {
-		System.out.println(schoolDto);
+	public SchoolDto save(SchoolDto schoolDto) {
 		if (schoolDto == null) {
-            return null;
-        }
-        System.out.println("Got through the if...?");
-        final School school = schoolDto.isIdSet() ? schoolRepository.getOne(schoolDto.getId()) : new School();
-        System.out.println(school);
-        if (school.getId() == null && !update) {
-            school.setYears(new ArrayList<>());
-            school.setTeachers(new ArrayList<>());
-        }
-
-        SchoolDtoDecorator decorator = SchoolDtoDecorator.builder().build();
-        schoolMapper.decorate(schoolDto, decorator);
-        schoolMapper.updateEntity(decorator.init(school, update), school);
-        return schoolMapper.toDto(schoolRepository.save(school));
-    }
+			return null;
+		}
+		final School school = schoolDto.isIdSet() ? schoolRepository.getOne(schoolDto.getId()) : new School();
+		SchoolDtoDecorator decorator = SchoolDtoDecorator.builder().build();
+		schoolMapper.decorate(schoolDto, decorator);
+		schoolMapper.updateEntity(decorator.init(school), school);
+		return schoolMapper.toDto(schoolRepository.save(school));
+	}
 }

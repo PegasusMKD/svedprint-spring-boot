@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @ToString
 @EqualsAndHashCode
 public class Identifiable<T> {

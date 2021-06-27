@@ -9,20 +9,19 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Repository;
 
-// TODO: Specify other mappers needed when implementing this mapper (as u write the code)
-
-// , uses = { YearMapper.class, SchoolClassMapper.class, StudentMapper.class }
 @Repository
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+		uses = {YearMapper.class, SchoolClassMapper.class, StudentMapper.class})
 public interface SubjectOrientationMapper {
-    SubjectOrientation toEntity(SubjectOrientationDto dto);
+	SubjectOrientation toEntity(SubjectOrientationDto dto);
 
-    @Mapping(target = "year", ignore = true)
-    @Mapping(target = "classes", ignore = true)
-    @Mapping(target = "students", ignore = true)
-    SubjectOrientationDto toDto(SubjectOrientation entity);
+	@Mapping(target = "year", ignore = true)
+	@Mapping(target = "classes", ignore = true)
+	@Mapping(target = "students", ignore = true)
+	SubjectOrientationDto toDto(SubjectOrientation entity);
 
-    void updateEntity(SubjectOrientationDto dto, @MappingTarget SubjectOrientation entity);
+	@Mapping(target = "classes", ignore = true)
+	void updateEntity(SubjectOrientationDto dto, @MappingTarget SubjectOrientation entity);
 
-    void decorate(SubjectOrientationDto dto, @MappingTarget SubjectOrientationDtoDecorator decorator);
+	void decorate(SubjectOrientationDto dto, @MappingTarget SubjectOrientationDtoDecorator decorator);
 }
