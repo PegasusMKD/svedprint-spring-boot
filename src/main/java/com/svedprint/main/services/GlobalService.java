@@ -4,6 +4,7 @@ import com.svedprint.main.dtos.*;
 import com.svedprint.main.services.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -25,6 +26,7 @@ public class GlobalService {
 	private final SubjectOrientationDtoService subjectOrientationDtoService;
 	private final YearDtoService yearDtoService;
 
+	@Lazy
 	public GlobalService(TeacherDtoService teacherDtoService, SchoolDtoService schoolDtoService,
 						 SchoolClassDtoService schoolClassDtoService, StudentDtoService studentDtoService,
 						 SubjectOrientationDtoService subjectOrientationDtoService, YearDtoService yearDtoService) {
@@ -86,7 +88,7 @@ public class GlobalService {
 				teacherDto.setLastName("Jovanov");
 				teacherDto.setUsername(RandomStringUtils.randomAlphanumeric(10));
 				teacherDto.setPassword(RandomStringUtils.randomAlphanumeric(10));
-				teacherDtoService.save(teacherDto, false);
+				teacherDtoService.save(teacherDto);
 				teachers.add(teacherDto);
 			}
 		}
@@ -103,7 +105,7 @@ public class GlobalService {
 
 		FileWriter fileWriter = new FileWriter("./teachers-data.txt");
 		for (TeacherDto teacherDto : teachers) {
-			fileWriter.write(String.format("Class:%s\n\tUsername:%s\n\tPassword:%s\n", teacherDto.getSchoolClass().getName(), teacherDto.getUsername(), teacherDto.getPassword()));
+			fileWriter.write(String.format("Class:%s\n\tUsername: %s\n\tPassword: %s\n", teacherDto.getSchoolClass().getName(), teacherDto.getUsername(), teacherDto.getPassword()));
 		}
 		fileWriter.close();
 		System.out.println("finished initDB");

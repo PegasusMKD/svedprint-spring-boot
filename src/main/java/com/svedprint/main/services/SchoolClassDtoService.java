@@ -10,6 +10,7 @@ import com.svedprint.main.models.Teacher;
 import com.svedprint.main.models.Year;
 import com.svedprint.main.repositories.SchoolClassRepository;
 import com.svedprint.main.services.decorators.SchoolClassDtoDecorator;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class SchoolClassDtoService {
 	private final SubjectOrientationDtoService subjectOrientationDtoService;
 	private final TeacherDtoService teacherDtoService;
 
+	@Lazy
 	public SchoolClassDtoService(SchoolClassRepository schoolClassRepository, SchoolClassMapper schoolClassMapper,
 								 YearDtoService yearDtoService, SubjectOrientationDtoService subjectOrientationDtoService,
 								 TeacherDtoService teacherDtoService) {

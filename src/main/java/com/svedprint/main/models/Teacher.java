@@ -48,6 +48,6 @@ public class Teacher {
 	private School school;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "school_class_id", referencedColumnName = "id")
+	@JoinColumn(name = "school_class_id")
 	private SchoolClass schoolClass;
 }

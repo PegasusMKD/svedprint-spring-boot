@@ -14,6 +14,7 @@ import com.svedprint.main.services.decorators.TeacherDtoDecorator;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,6 +96,10 @@ public class TeacherDtoService {
 				.orElseGet(() -> ofNullable(teacher.getSchoolClass()).map(SchoolClass::getId)
 						.orElseThrow(() -> new AssertionError(SvedPrintExceptionType.NO_CLASS_ASSIGNED)));
 		teacher.setSchoolClass(schoolClassDtoService.findEntity(schoolClass));
+
+		if (teacherDto.getPassword() != null && !teacherDto.getPassword().isEmpty()) {
+			teacherDto.setPassword(argon2.hash(4, 5000, 2, teacherDto.getPassword()));
+		}
 
 		TeacherDtoDecorator decorator = TeacherDtoDecorator.builder().build();
 		teacherMapper.decorate(teacherDto, decorator);

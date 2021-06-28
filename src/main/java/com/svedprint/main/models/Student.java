@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -145,8 +146,8 @@ public class Student {
 	@ElementCollection
 	private List<String> languages; // TODO: Maybe this should be reworked so that it doesn't send languages as 0:1
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Map<String, PromData> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	private HashMap<String, PromData> maturska; // TODO: Check how it's stored in base currently, and then make a decision based on that (prom - матурска)
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@OrderColumn(name = "idx")

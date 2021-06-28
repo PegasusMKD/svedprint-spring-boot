@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Repository;
 
-@Repository
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
 		uses = {SubjectOrientationMapper.class, SchoolMapper.class, SchoolClassMapper.class})
 public interface TeacherMapper {
