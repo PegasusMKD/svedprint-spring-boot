@@ -101,6 +101,7 @@ public class GlobalService {
 				student.setSubjectOrientation(subjectOrientationsArray.get(RandomUtils.nextInt(0, subjectOrientationsArray.size())));
 				studentDtoService.oldSave(student, false);
 			}
+			// TEst comment
 		}
 
 		FileWriter fileWriter = new FileWriter("./out/teachers-data.txt");
