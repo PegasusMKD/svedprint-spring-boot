@@ -1,0 +1,9 @@
+POST http://34.107.121.20:8080/api/teachers
+Content-Type: application/json
+password:pfvTi1NzxE
+
+{
+  "username": "7sMViyYn3B"
+}
+
+###

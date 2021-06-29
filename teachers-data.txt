@@ -1,0 +1,18 @@
+Class:III-1
+	Username:jvjDB6IAYl
+	Password:QG5Sj0vZ7c
+Class:III-2
+	Username:Rs9XN3249e
+	Password:KPfDni9oRv
+Class:I-1
+	Username:1xVXjIBa0d
+	Password:4a7izvgg4d
+Class:I-2
+	Username:OCA1Nx6HbM
+	Password:8QCJcT1amm
+Class:II-1
+	Username:3AjmtuDsgA
+	Password:Z9oG0OGT9f
+Class:II-2
+	Username:eudO08JIdP
+	Password:lVgq5nmxGi

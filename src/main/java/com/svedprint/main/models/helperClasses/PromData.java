@@ -19,6 +19,8 @@ import javax.persistence.Id;
 @Setter
 public class PromData {
 
+    // TODO: Add data that prom subjects contain
+
     @JsonIgnore
     @Column(name = "prom_data_id", length = 36)
     @GeneratedValue(generator = "strategy-uuid2")

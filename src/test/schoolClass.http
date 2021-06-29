@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/schoolClass/
+Content-Type: application/json
+
+{
+  "token": "rPpwod2vLEV4NtYt4DHj"
+}
+
+###

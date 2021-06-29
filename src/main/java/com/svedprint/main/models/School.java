@@ -5,65 +5,72 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 public class School {
 
-    @JsonIgnore
-    @Column(name = "school_id", length = 36)
-    @GeneratedValue(generator = "strategy-uuid2")
-    @GenericGenerator(name = "strategy-uuid2", strategy = "uuid2")
-    @Id
-    private String id;
+	@JsonIgnore
+	@Column(name = "school_id", length = 36)
+	@GeneratedValue(generator = "strategy-uuid2")
+	@GenericGenerator(name = "strategy-uuid2", strategy = "uuid2")
+	@Id
+	private String id;
 
-    @Column(name = "name_of_school", length = 150)
-    private String name;
+	@Column(name = "name_of_school", length = 150)
+	private String name;
 
-    @Column(name = "act_number", length = 50)
-    private String actNumber; // TODO: Refactor this into a List for GYMNASIUM and PROFESSIONAL
+	@Column(name = "act_number", length = 50)
+	private String actNumber; // TODO: Refactor this into a List for GYMNASIUM and PROFESSIONAL
 
-    @Column(name="act_date")
-    private Date actDate; // TODO: Refactor this into a list for GYMNASIUM and PROFESSIONAL
+	// TODO: Try to implement with LocalDate instead of Date
+	@Column(name = "act_date")
+	@Temporal(TemporalType.DATE)
+	private Date actDate; // TODO: Refactor this into a list for GYMNASIUM and PROFESSIONAL
 
-    @Column(name = "director_name", length = 60)
-    private String directorName;
+	@Column(name = "director_name", length = 60)
+	private String directorName;
 
-    @Column(name = "business_number", length = 50)
-    private String businessNumber; // TODO: Might need refactoring since all of the differences in the number
+	@Column(name = "business_number", length = 50)
+	private String businessNumber; // TODO: Might need refactoring since all of the differences in the number
 
-    @Column(name = "main_book", length = 5)
-    private String mainBook; // TODO: Maybe refactor
+	@Column(name = "main_book", length = 5)
+	private String mainBook; // TODO: Maybe refactor
 
-    @Column(name = "ministry", length = 200)
-    private String ministry;
+	@Column(name = "ministry", length = 200)
+	private String ministry;
 
-    @Column(name = "country", length = 150)
-    private String country;
+	@Column(name = "country", length = 150)
+	private String country;
 
-    @Column(name = "city", length = 150)
-    private String city;
+	@Column(name = "city", length = 150)
+	private String city;
 
-    @Column(name = "last_digits_of_year", length = 10)
-    private String lastDigitsOfYear;
+	@Column(name = "last_digits_of_year", length = 10)
+	private String lastDigitsOfYear;
 
-    @ElementCollection
-    private List<Date> printDatesForDiploma;
+	// TODO: Try to implement with LocalDate instead of Date
+	@ElementCollection
+	@Temporal(TemporalType.DATE)
+	private List<Date> printDatesForDiploma;
 
-    @ElementCollection
-    private List<Date> printDatesForTestimony;
+	// TODO: Try to implement with LocalDate instead of Date
+	@ElementCollection
+	@Temporal(TemporalType.DATE)
+	private List<Date> printDatesForTestimony;
 
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    private List<Year> years;
+	// TODO: Disable cascade (or check why cascade was even used in the first place)
+	@OneToMany(mappedBy = "school")
+	private List<Year> years = new ArrayList<>();
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    private List<Teacher> teachers;
+	@OneToMany(mappedBy = "school")
+	private List<Teacher> teachers = new ArrayList<>();
 }

@@ -1,0 +1,31 @@
+package com.svedprint.main.controllers;
+
+import com.svedprint.main.dtos.TeacherDto;
+import com.svedprint.main.services.TeacherDtoService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@RestController
+@RequestMapping("api/teachers")
+public class TeacherController {
+
+	private final TeacherDtoService teacherDtoService;
+
+	public TeacherController(TeacherDtoService teacherDtoService) {
+		this.teacherDtoService = teacherDtoService;
+	}
+
+	// TODO: Implement with OAuth 2.0
+	@PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	public ResponseEntity<TeacherDto> login(@RequestBody TeacherDto teacherDto, @RequestHeader(name = "password") String password) {
+		TeacherDto res = teacherDtoService.login(teacherDto, password);
+		if (res == null) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		return ResponseEntity.ok(res);
+	}
+
+}
