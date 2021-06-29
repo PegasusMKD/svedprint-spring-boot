@@ -103,7 +103,7 @@ public class GlobalService {
 			}
 		}
 
-		FileWriter fileWriter = new FileWriter("./teachers-data.txt");
+		FileWriter fileWriter = new FileWriter("./out/teachers-data.txt");
 		for (TeacherDto teacherDto : teachers) {
 			fileWriter.write(String.format("Class:%s\n\tUsername: %s\n\tPassword: %s\n", teacherDto.getSchoolClass().getName(), teacherDto.getUsername(), teacherDto.getPassword()));
 		}

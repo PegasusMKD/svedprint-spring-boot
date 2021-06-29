@@ -20,7 +20,7 @@ public class StudentController {
 		this.studentDtoService = studentDtoService;
 	}
 
-	@GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	@GetMapping(produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StudentDto>> getAllStudents(@RequestHeader String token) {
 		List<StudentDto> res = studentDtoService.getAllStudents(token);
 		if (res == null) {

@@ -1,4 +1,0 @@
-2021-06-28 06:31:50.473|8|select * from information_schema.sequences
-2021-06-28 06:31:51.440|1|select * from information_schema.sequences
-2021-06-28 06:31:51.599|91|alter table if exists teacher add column school_class_id varchar(36)
-2021-06-28 06:31:51.825|48|alter table if exists teacher add constraint FKald1k4fewg1xc1ontcprnv8k8 foreign key (school_class_id) references school_class

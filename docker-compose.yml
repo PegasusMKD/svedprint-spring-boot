@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  main-module:
+    image: '35.198.141.236:5000/svedprint/main-module:latest'
+    build:
+      context: ./
+    container_name: main-module
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:p6spy:postgresql://postgres:5432/svedprint_spring
+      - SPRING_DATASOURCE_USERNAME=svedprint
+      - SPRING_DATASOURCE_PASSWORD=freemium_svedprint
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - 8080:8080
+    volumes:
+      - ./logs:/logs
+      - ./out:/out
+
+  postgres:
+    image: 'postgres:11.4-alpine'
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=svedprint
+      - POSTGRES_PASSWORD=freemium_svedprint
+    ports:
+      - 5432:5432
+    volumes:
+      - ./deploy/sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local
+
+

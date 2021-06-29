@@ -97,13 +97,15 @@ public class TeacherDtoService {
 						.orElseThrow(() -> new AssertionError(SvedPrintExceptionType.NO_CLASS_ASSIGNED)));
 		teacher.setSchoolClass(schoolClassDtoService.findEntity(schoolClass));
 
-		if (teacherDto.getPassword() != null && !teacherDto.getPassword().isEmpty()) {
-			teacherDto.setPassword(argon2.hash(4, 5000, 2, teacherDto.getPassword()));
-		}
-
 		TeacherDtoDecorator decorator = TeacherDtoDecorator.builder().build();
 		teacherMapper.decorate(teacherDto, decorator);
-		teacherMapper.updateEntity(decorator.init(teacher), teacher);
+
+		TeacherDto tmpTeacher = decorator.init(teacher);
+		if (tmpTeacher.getPassword() != null && !tmpTeacher.getPassword().isEmpty()) {
+			tmpTeacher.setPassword(argon2.hash(4, 5000, 2, tmpTeacher.getPassword()));
+		}
+
+		teacherMapper.updateEntity(tmpTeacher, teacher);
 
 		return teacherMapper.toDtoEager(teacherRepository.save(teacher));
 	}
