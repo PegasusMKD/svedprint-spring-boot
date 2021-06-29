@@ -1,14 +1,13 @@
 # Multi-stage build
 
-FROM openjdk:8-jdk-alpine as build
+FROM maven:3.5-jdk-8 as build
 WORKDIR /workspace/app
 
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
-RUN ./mvnw install -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn clean package  -Dmaven.test.skip
+
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM openjdk:8-jdk-alpine
