@@ -1,5 +1,5 @@
 # Multi-stage build
-FROM maven:3.5-jdk-8 as build
+FROM maven:3.8.1-jdk-8 as build
 WORKDIR /workspace/app
 
 # Copy required pom & source
