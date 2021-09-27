@@ -39,14 +39,6 @@ public class TeacherDtoService {
 		this.schoolClassDtoService = schoolClassDtoService;
 	}
 
-
-	@Transactional(readOnly = true)
-	public TeacherDto findOne(String id, String token) {
-		// TODO: Rework with OAuth 2.0
-		return teacherMapper.toDtoEager(teacherRepository.findByIdOrToken(id, token)
-				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.MISSING_USER)));
-	}
-
 	@Transactional(readOnly = true)
 	public TeacherDto findOne(String id) {
 		return teacherMapper.toDtoEager(teacherRepository.findById(id)
