@@ -2,6 +2,8 @@ package com.svedprint.main.services;
 
 import com.svedprint.main.dtos.*;
 import com.svedprint.main.services.*;
+import lombok.SneakyThrows;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.context.annotation.Lazy;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,7 +42,8 @@ public class GlobalService {
 	}
 
 
-	public void initDB() throws IOException {
+	@SneakyThrows
+	public void initDB() {
 		List<String> yearNames = Arrays.asList("I", "II", "III");
 
 		SchoolDto schoolDto = new SchoolDto();
@@ -87,8 +91,10 @@ public class GlobalService {
 				teacherDto.setFirstName("Filip");
 				teacherDto.setLastName("Jovanov");
 				teacherDto.setUsername(RandomStringUtils.randomAlphanumeric(10));
-				teacherDto.setPassword(RandomStringUtils.randomAlphanumeric(10));
+				String password = RandomStringUtils.randomAlphanumeric(10);
+				teacherDto.setPassword(DigestUtils.sha256Hex(password));
 				teacherDtoService.save(teacherDto);
+				teacherDto.setPassword(password);
 				teachers.add(teacherDto);
 			}
 		}
