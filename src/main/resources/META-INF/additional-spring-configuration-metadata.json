@@ -1,0 +1,34 @@
+{
+  "properties": [
+    {
+      "name": "argon2-parameters.salt-length",
+      "type": "java.lang.Integer",
+      "description": "Size of the salt used for encryption (in characters)."
+    },
+    {
+      "name": "argon2-parameters.hash-length",
+      "type": "java.lang.Integer",
+      "description": "Size of the hash used for encryption (in characters)."
+    },
+    {
+      "name": "argon2-parameters.parallelism",
+      "type": "java.lang.Integer",
+      "description": "Number of cores to use for encrypting the hash."
+    },
+    {
+      "name": "argon2-parameters.memory",
+      "type": "java.lang.Integer",
+      "description": "Amount of memory used for encrypting."
+    },
+    {
+      "name": "argon2-parameters.iterations",
+      "type": "java.lang.Integer",
+      "description": "Number of times the hash function gets called recursively."
+    },
+    {
+      "name": "server.location",
+      "type": "java.lang.String",
+      "description": "Location of current back-end for redirects."
+    }
+  ]
+}

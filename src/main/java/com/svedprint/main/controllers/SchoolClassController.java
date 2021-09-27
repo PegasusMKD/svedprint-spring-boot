@@ -22,8 +22,8 @@ public class SchoolClassController {
 	}
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<SchoolClassDto> getSchoolClassByUser(@RequestBody TeacherDto teacherDto) {
-		SchoolClassDto res = schoolClassDtoService.getSchoolClassByUser(teacherDto);
+	public ResponseEntity<SchoolClassDto> getSchoolClassByUser() {
+		SchoolClassDto res = schoolClassDtoService.getSchoolClassByUser();
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
