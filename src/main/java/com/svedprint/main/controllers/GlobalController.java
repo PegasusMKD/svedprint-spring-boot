@@ -2,6 +2,7 @@ package com.svedprint.main.controllers;
 
 import com.svedprint.main.services.GlobalService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class GlobalController {
 	}
 
 	@PostMapping("/api/init")
-	public void initDB() throws IOException {
+	public void initDB() {
 		globalService.initDB();
 	}
 

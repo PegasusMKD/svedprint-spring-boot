@@ -1,4 +1,4 @@
-package com.svedprint.main.errorControllers;
+package com.svedprint.main.controllers.errors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

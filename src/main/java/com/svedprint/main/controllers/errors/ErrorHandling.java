@@ -1,4 +1,4 @@
-package com.svedprint.main.errorControllers;
+package com.svedprint.main.controllers.errors;
 
 import com.svedprint.main.exceptions.SvedPrintException;
 import org.springframework.http.HttpStatus;

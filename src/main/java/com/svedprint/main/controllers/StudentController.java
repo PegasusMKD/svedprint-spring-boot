@@ -21,8 +21,8 @@ public class StudentController {
 	}
 
 	@GetMapping(produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<StudentDto>> getAllStudents(@RequestHeader String token) {
-		List<StudentDto> res = studentDtoService.getAllStudents(token);
+	public ResponseEntity<List<StudentDto>> getAllStudents() {
+		List<StudentDto> res = studentDtoService.getAllStudents();
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -48,8 +48,8 @@ public class StudentController {
 	}
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<StudentDto> create(@RequestBody StudentDto studentDto, @RequestHeader String token) {
-		StudentDto res = studentDtoService.save(studentDto, token);
+	public ResponseEntity<StudentDto> create(@RequestBody StudentDto studentDto) {
+		StudentDto res = studentDtoService.save(studentDto);
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -58,8 +58,8 @@ public class StudentController {
 	}
 
 	@PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<StudentDto> update(@RequestBody StudentDto studentDto, @RequestHeader String token) {
-		StudentDto res = studentDtoService.save(studentDto, token);
+	public ResponseEntity<StudentDto> update(@RequestBody StudentDto studentDto) {
+		StudentDto res = studentDtoService.save(studentDto);
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -68,8 +68,8 @@ public class StudentController {
 	}
 
 	@DeleteMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<StudentDto> delete(@RequestBody StudentDto studentDto, @RequestHeader String token) {
-		boolean res = studentDtoService.delete(studentDto, token);
+	public ResponseEntity<StudentDto> delete(@RequestBody StudentDto studentDto) {
+		boolean res = studentDtoService.delete(studentDto);
 		if (!res) {
 			return ResponseEntity.badRequest().build();
 		}

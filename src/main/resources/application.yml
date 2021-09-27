@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    username: svedprint
+    password: freemium_svedprint
+    url: jdbc:p6spy:postgresql://localhost:5432/svedprint_spring
+    tomcat:
+      max-active: 500
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+security:
+  encoding-strength: 256
+  jwt:
+    client-id: svedprintclientid
+    client-secret: FHSs82BbPzagP
+    grant-type: password
+    resource-ids: svedprintresourceid
+    scope-read: read
+    scope-write: write
+  oauth2:
+    resource:
+      filter-order: 3
+  security-realm: SvedPrint JWT Realm
+  signing-key: kdYcOsH8V4IZxH6
+
+argon2-parameters:
+  salt-length: 128
+  hash-length: 128
+  parallelism: 2
+  memory: 2096
+  iterations: 3
+
+server:
+  location: http://localhost:8080

@@ -18,8 +18,8 @@ public class SubjectOrientationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<SubjectOrientationDto> create(@RequestBody SubjectOrientationDto subjectOrientationDto, @RequestHeader String token) {
-		SubjectOrientationDto res = subjectOrientationDtoService.save(subjectOrientationDto, token, false);
+	public ResponseEntity<SubjectOrientationDto> create(@RequestBody SubjectOrientationDto subjectOrientationDto) {
+		SubjectOrientationDto res = subjectOrientationDtoService.save(subjectOrientationDto, false);
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -28,13 +28,13 @@ public class SubjectOrientationController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<SubjectOrientationDto>> get(@RequestHeader String token) {
-		return ResponseEntity.ok(subjectOrientationDtoService.get(token));
+	public ResponseEntity<List<SubjectOrientationDto>> get() {
+		return ResponseEntity.ok(subjectOrientationDtoService.get());
 	}
 
 	@PutMapping
-	public ResponseEntity<SubjectOrientationDto> update(@RequestBody SubjectOrientationDto subjectOrientationDto, @RequestHeader String token) {
-		SubjectOrientationDto res = subjectOrientationDtoService.save(subjectOrientationDto, token, true);
+	public ResponseEntity<SubjectOrientationDto> update(@RequestBody SubjectOrientationDto subjectOrientationDto) {
+		SubjectOrientationDto res = subjectOrientationDtoService.save(subjectOrientationDto, true);
 		if (res == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -43,8 +43,8 @@ public class SubjectOrientationController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<Object> delete(@RequestBody SubjectOrientationDto subjectOrientationDto, @RequestHeader String token) {
-		boolean res = subjectOrientationDtoService.delete(subjectOrientationDto, token);
+	public ResponseEntity<Object> delete(@RequestBody SubjectOrientationDto subjectOrientationDto) {
+		boolean res = subjectOrientationDtoService.delete(subjectOrientationDto);
 		if (!res) {
 			return ResponseEntity.badRequest().build();
 		}

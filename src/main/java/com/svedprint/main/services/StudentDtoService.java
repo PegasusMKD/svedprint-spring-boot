@@ -1,6 +1,7 @@
 package com.svedprint.main.services;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.svedprint.main.configs.oauth.security.UserContext;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.StudentDto;
 import com.svedprint.main.dtos.SubjectOrientationDto;
@@ -48,11 +49,9 @@ public class StudentDtoService {
 
 	}
 
-	@Deprecated
 	@Transactional(readOnly = true)
-	public List<StudentDto> getAllStudents(String token) {
-		// TODO: Change with OAuth 2.0
-		return teacherDtoService.findEntityByToken(token).getSchoolClass().getStudents()
+	public List<StudentDto> getAllStudents() {
+		return teacherDtoService.findEntityByToken().getSchoolClass().getStudents()
 				.stream().map(studentMapper::toDto).collect(Collectors.toList());
 	}
 
@@ -63,14 +62,14 @@ public class StudentDtoService {
 	}
 
 	@Transactional
-	public StudentDto save(StudentDto dto, String token) {
+	public StudentDto save(StudentDto dto) {
 		if (dto == null) {
 			return null;
 		}
 
 		final Student student = dto.isIdSet() ? studentRepository.getOne(dto.getId()) : new Student();
 		// TODO: Change with OAuth 2.0
-		final Teacher teacher = teacherDtoService.findEntityByToken(token);
+		final Teacher teacher = teacherDtoService.findEntityByToken();
 
 		String classId = ofNullable(dto.getSchoolClass()).map(SchoolClassDto::getId)
 				.orElse(ofNullable(student.getSchoolClass()).map(SchoolClass::getId)
@@ -162,11 +161,11 @@ public class StudentDtoService {
 	}
 
 	@Transactional
-	public boolean delete(StudentDto studentDto, String token) {
+	public boolean delete(StudentDto studentDto) {
 		if (studentDto == null || studentDto.getId() == null) {
 			return false;
 		}
-		final Teacher teacher = teacherDtoService.findEntityByToken(token);
+		final Teacher teacher = teacherDtoService.findEntityByToken();
 		if (teacher.getSchoolClass().getStudents().stream().map(Student::getId).collect(Collectors.toList()).contains(studentDto.getId())) {
 			studentRepository.deleteById(studentDto.getId());
 			return true;

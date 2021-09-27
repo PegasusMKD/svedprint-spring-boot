@@ -35,7 +35,7 @@ public class Teacher {
 	@Column(name = "username", length = 60, nullable = false, unique = true)
 	private String username;
 
-	@Column(name = "password")
+	@Column(name = "password", length = 500)
 	private String password;
 
 	@Column(name = "token", length = 20)

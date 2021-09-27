@@ -1,5 +1,6 @@
 package com.svedprint.main.services;
 
+import com.svedprint.main.configs.oauth.security.UserContext;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.SchoolDto;
 import com.svedprint.main.dtos.TeacherDto;
@@ -11,10 +12,8 @@ import com.svedprint.main.models.SchoolClass;
 import com.svedprint.main.models.Teacher;
 import com.svedprint.main.repositories.TeacherRepository;
 import com.svedprint.main.services.decorators.TeacherDtoDecorator;
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ import static java.util.Optional.ofNullable;
 @Service
 public class TeacherDtoService {
 
-	private static final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+	private final PasswordEncoder argon2;
 
 	private final TeacherRepository teacherRepository;
 	private final TeacherMapper teacherMapper;
@@ -31,8 +30,9 @@ public class TeacherDtoService {
 	private final SchoolDtoService schoolDtoService;
 	private final SchoolClassDtoService schoolClassDtoService;
 
-	public TeacherDtoService(TeacherRepository teacherRepository, TeacherMapper teacherMapper,
+	public TeacherDtoService(PasswordEncoder argon2, TeacherRepository teacherRepository, TeacherMapper teacherMapper,
 							 SchoolDtoService schoolDtoService, SchoolClassDtoService schoolClassDtoService) {
+		this.argon2 = argon2;
 		this.teacherRepository = teacherRepository;
 		this.teacherMapper = teacherMapper;
 		this.schoolDtoService = schoolDtoService;
@@ -46,26 +46,15 @@ public class TeacherDtoService {
 	}
 
 	@Transactional(readOnly = true)
-	public Teacher findEntityByToken(String token) {
-		// TODO: Rework with OAuth 2.0
-		return teacherRepository.findByToken(token)
-				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.MISSING_USER));
+	public TeacherDto findByUsername(String username) {
+		return teacherMapper.toDtoEager(teacherRepository.findByUsername(username)
+				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.MISSING_USER)));
 	}
 
-	@Transactional
-	public TeacherDto login(TeacherDto teacherDto, String password) {
-		// TODO: Implement for OAuth 2.0
-		Teacher teacher = teacherRepository.findByUsername(teacherDto.getUsername());
-		if (argon2.verify(teacher.getPassword(), password)) {
-			if (teacher.getSchoolClass() == null) {
-				throw new SvedPrintException(SvedPrintExceptionType.NO_CLASS_ASSIGNED);
-			}
-			teacher.setToken(RandomStringUtils.randomAlphanumeric(20));
-			teacherRepository.save(teacher);
-			return teacherMapper.toDtoEager(teacher);
-		}
-
-		return null;
+	@Transactional(readOnly = true)
+	public Teacher findEntityByToken() {
+		return teacherRepository.findByUsername(UserContext.getUsername())
+				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.MISSING_USER));
 	}
 
 	@Transactional
@@ -94,7 +83,7 @@ public class TeacherDtoService {
 
 		TeacherDto tmpTeacher = decorator.init(teacher);
 		if (tmpTeacher.getPassword() != null && !tmpTeacher.getPassword().isEmpty()) {
-			tmpTeacher.setPassword(argon2.hash(4, 5000, 2, tmpTeacher.getPassword()));
+			tmpTeacher.setPassword(argon2.encode(tmpTeacher.getPassword()));
 		}
 
 		teacherMapper.updateEntity(tmpTeacher, teacher);

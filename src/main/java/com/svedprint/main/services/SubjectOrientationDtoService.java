@@ -44,7 +44,7 @@ public class SubjectOrientationDtoService {
 
 	// TODO: Possibly remove clone functionalities
 	@Transactional
-	public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, String token, boolean update) {
+	public SubjectOrientationDto save(SubjectOrientationDto subjectOrientationDto, boolean update) {
 		if (subjectOrientationDto == null) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class SubjectOrientationDtoService {
 		}
 
 		// TODO: Implement with OAuth 2.0
-		final Teacher teacher = teacherDtoService.findEntityByToken(token);
+		final Teacher teacher = teacherDtoService.findEntityByToken();
 
 		// TODO: Research why we search by short-name & year instead of just ID (most probably to check if a similar copy exists so we can clone it)
 		List<SubjectOrientation> subjectOrientations = subjectOrientationRepository.findAllByShortNameAndYear(subjectOrientationDto.getShortName(), teacher.getSchoolClass().getYear());
@@ -121,19 +121,17 @@ public class SubjectOrientationDtoService {
 		return subjectOrientationMapper.toDto(subjectOrientationRepository.save(subjectOrientation));
 	}
 
-	@Deprecated
 	@Transactional(readOnly = true)
-	public List<SubjectOrientationDto> get(String token) {
-		// TODO: Implement with OAuth 2.0
-		return teacherDtoService.findEntityByToken(token).getSchoolClass().getSubjectOrientations().stream()
+	public List<SubjectOrientationDto> get() {
+		return teacherDtoService.findEntityByToken().getSchoolClass().getSubjectOrientations().stream()
 				.map(subjectOrientationMapper::toDto).collect(Collectors.toList());
 	}
 
 	@Transactional
-	public boolean delete(SubjectOrientationDto subjectOrientationDto, String token) {
+	public boolean delete(SubjectOrientationDto subjectOrientationDto) {
 		try {
 			// TODO: Implement with OAuth 2.0
-			Teacher teacher = teacherDtoService.findEntityByToken(token);
+			Teacher teacher = teacherDtoService.findEntityByToken();
 			if (!subjectOrientationDto.isIdSet()) {
 				throw new SvedPrintException(SvedPrintExceptionType.NO_ORIENTATION_PROVIDED);
 			}

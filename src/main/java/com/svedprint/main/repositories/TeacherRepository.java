@@ -8,9 +8,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.Optional;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String>, QuerydslPredicateExecutor<Teacher> {
-	Teacher findByUsername(String username);
-
-	Optional<Teacher> findByIdOrToken(String id, String token);
-
-	Optional<Teacher> findByToken(String token);
+	Optional<Teacher> findByUsername(String username);
 }

@@ -76,8 +76,8 @@ public class SchoolClassDtoService {
 	}
 
 	@Transactional(readOnly = true)
-	public SchoolClassDto getSchoolClassByUser(TeacherDto teacherDto) {
-		Teacher teacher = teacherDtoService.findEntityByToken(teacherDto.getToken());
+	public SchoolClassDto getSchoolClassByUser() {
+		Teacher teacher = teacherDtoService.findEntityByToken();
 		return schoolClassMapper.toDto(teacher.getSchoolClass());
 	}
 
