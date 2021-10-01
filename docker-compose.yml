@@ -14,7 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=freemium_svedprint
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./logs:/logs
       - ./out:/out
@@ -27,7 +27,7 @@ services:
       - POSTGRES_USER=svedprint
       - POSTGRES_PASSWORD=freemium_svedprint
     ports:
-      - 5432:5432
+      - "8432:5432"
     volumes:
       - ./deploy/sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
       - postgres_data:/var/lib/postgresql/data

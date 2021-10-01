@@ -14,8 +14,6 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Teacher {
 
-	// TODO: Refactor tokenizing and all that to OAuth 2.0 with JWT
-
 	@JsonIgnore
 	@Column(name = "teacher_id", length = 36)
 	@GeneratedValue(generator = "strategy-uuid2")
@@ -38,13 +36,11 @@ public class Teacher {
 	@Column(name = "password", length = 500)
 	private String password;
 
-	@Column(name = "token", length = 20)
-	private String token;
-
 	@Column(name = "print_allowed")
 	private boolean printAllowed;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "school_id")
 	private School school;
 
 	@OneToOne(fetch = FetchType.LAZY)

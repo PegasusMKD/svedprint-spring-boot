@@ -15,7 +15,6 @@ public class TeacherDto extends Identifiable<String> {
 	protected String lastName;
 	protected String username;
 	protected String password;
-	protected String token;
 	protected boolean printAllowed;
 	protected SchoolDto school;
 	protected SchoolClassDto schoolClass;
