@@ -5,6 +5,7 @@ import com.svedprint.main.configs.oauth.security.UserContext;
 import com.svedprint.main.dtos.SchoolClassDto;
 import com.svedprint.main.dtos.StudentDto;
 import com.svedprint.main.dtos.SubjectOrientationDto;
+import com.svedprint.main.dtos.TeacherDto;
 import com.svedprint.main.dtos.meta.PageResponse;
 import com.svedprint.main.exceptions.SvedPrintException;
 import com.svedprint.main.exceptions.SvedPrintExceptionType;
@@ -201,6 +202,7 @@ public class StudentDtoService {
 
 	@Transactional(readOnly = true)
 	public PageResponse<StudentDto> findAll(StudentDto dto) {
+		dto.setSchoolClass(teacherDtoService.findByToken().getSchoolClass());
 		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "number");
 		Page<Student> page = dto != null ?
 				studentRepository.findAll(makeFilter(dto), pageable) : Page.empty(pageable);

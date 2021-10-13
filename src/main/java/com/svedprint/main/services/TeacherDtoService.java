@@ -57,6 +57,11 @@ public class TeacherDtoService {
 				.orElseThrow(() -> new SvedPrintException(SvedPrintExceptionType.MISSING_USER));
 	}
 
+	@Transactional(readOnly = true)
+	public TeacherDto findByToken() {
+		return teacherMapper.toDtoEager(findEntityByToken());
+	}
+
 	@Transactional
 	public TeacherDto save(TeacherDto teacherDto) {
 		if (teacherDto == null) {
